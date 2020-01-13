@@ -21,16 +21,16 @@
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
         app:buttonGravity="bottom|top"
-        app:navigationIcon="@drawable/ic_menu"
         app:fabAlignmentMode="end"
-        app:fabCradleMargin="8dp"
+        app:fabCradleMargin="4dp"
+        app:fabCradleRoundedCornerRadius="4dp"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNoteButton"
+        android:id="@+id/faButton"
         android:layout_width="wrap_content"
-        android:src="@drawable/ic_add_note"
-        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_add_note_2"
+        app:backgroundTint="@color/grey_50"
         app:layout_anchor="@id/bottomAppBar"
         android:layout_height="wrap_content"/>
 
