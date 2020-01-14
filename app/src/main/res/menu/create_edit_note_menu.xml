@@ -8,6 +8,11 @@
         android:title="Share Note"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/actionChangeFont"
+        android:icon="@drawable/ic_font_change"
+        android:title="Change Font"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/actionChangeColor"
         android:icon="@drawable/ic_color_change"
         android:title="Change Color"
