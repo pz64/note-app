@@ -14,9 +14,14 @@ const val COLUMN_LASTUPDATED = "last_updated"
 @Entity(tableName = TABLE_NAME)
 class Note(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = COLUMN_TITLE) val title: String,
-    @ColumnInfo(name = COLUMN_CONTENT) val description: String,
-    @ColumnInfo(name = COLUMN_COLOR) val color: Int = 0,
-    @ColumnInfo(name = COLUMN_FONT) val font: Int = 0,
-    @ColumnInfo(name = COLUMN_LASTUPDATED) val lastUpdated: Long
+
+    @ColumnInfo(name = COLUMN_TITLE) var title: String,
+
+    @ColumnInfo(name = COLUMN_CONTENT) var content: String,
+
+    @ColumnInfo(name = COLUMN_COLOR) var color: Int = 0,
+
+    @ColumnInfo(name = COLUMN_FONT) var font: Int = 0,
+
+    @ColumnInfo(name = COLUMN_LASTUPDATED) var lastUpdated: Long
 )

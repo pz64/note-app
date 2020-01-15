@@ -9,7 +9,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.main_activity.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pzy64.xnotes.R
+import pzy64.xnotes.data.eventbusmodel.Action
+import pzy64.xnotes.data.eventbusmodel.FabButtonActionModel
+import pzy64.xnotes.data.eventbusmodel.ReplyModel
 import pzy64.xnotes.delayed
 import pzy64.xnotes.ui.main.MainFragmentDirections
 
@@ -18,6 +24,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var viewModel: MainActivityViewModel
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +50,15 @@ class MainActivity : AppCompatActivity() {
         setupUi()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: ReplyModel) {
+        when (event.action) {
+            Action.NOTE_SAVED -> {
+                navigateBacktOMainScreen()
+            }
+        }
+    }
+
 
     private fun setupUi() {
 
@@ -48,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                     navigateToCreateNote()
                 }
                 R.id.destinationCreateNote -> {
-                    navigateBacktOMainScreen()
+                    EventBus.getDefault().post(FabButtonActionModel(Action.SAVE_NOTE))
                 }
             }
         }

@@ -41,6 +41,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:$room_version"
+
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
 
@@ -54,6 +55,8 @@ dependencies {
     //android navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.2.0-rc04"
     implementation "androidx.navigation:navigation-ui-ktx:2.2.0-rc04"
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

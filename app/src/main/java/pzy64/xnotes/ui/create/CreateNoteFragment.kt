@@ -8,32 +8,47 @@ import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.create_note_fragment.*
+import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.toast
+import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
+import pzy64.xnotes.data.eventbusmodel.Action
+import pzy64.xnotes.data.eventbusmodel.FabButtonActionModel
+import pzy64.xnotes.data.eventbusmodel.ReplyModel
 import pzy64.xnotes.databinding.CreateNoteFragmentBinding
 import pzy64.xnotes.ui.Colors
 import pzy64.xnotes.ui.Fonts
+import pzy64.xnotes.ui.baseclasses.Pz64Fragment
 import kotlin.math.hypot
 
-class CreateNoteFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = CreateNoteFragment()
-    }
+class CreateNoteFragment : Pz64Fragment() {
 
     private lateinit var viewModel: CreateNoteViewModel
     private lateinit var binding: CreateNoteFragmentBinding
 
     private lateinit var fonts: Fonts
+    private lateinit var factory: CreateNoteViewModel.Factory
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fonts = Fonts(context)
+        factory = Injetor.provideCreateNoteVMFactory(context.applicationContext)
     }
 
 
@@ -55,7 +70,7 @@ class CreateNoteFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(CreateNoteViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(CreateNoteViewModel::class.java)
         binding.viewModel = viewModel
         setupUi()
 
@@ -68,6 +83,24 @@ class CreateNoteFragment : Fragment() {
                 changeBg(Colors.COLORS[index])
             }
         })
+
+        viewModel.noteSaved.observe(this, Observer {
+            if (it == true) {
+                EventBus.getDefault().post(ReplyModel(Action.NOTE_SAVED))
+            }
+        })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: FabButtonActionModel) {
+        when (event.action) {
+            Action.SAVE_NOTE -> {
+               launch {
+                   viewModel.saveNote()
+               }
+            }
+
+        }
     }
 
     private fun changeBg(color: Int) {
@@ -136,7 +169,6 @@ class CreateNoteFragment : Fragment() {
                 val size = Colors.COLORS.size
 
                 viewModel.currentColorIndex.value = (index + 1) % size
-
             }
             R.id.actionShareNote -> {
                 context?.toast("share")
@@ -144,4 +176,5 @@ class CreateNoteFragment : Fragment() {
         }
         return false
     }
+
 }
