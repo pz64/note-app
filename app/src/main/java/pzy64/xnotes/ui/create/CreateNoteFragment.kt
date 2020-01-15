@@ -4,8 +4,8 @@ import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.animation.DecelerateInterpolator
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,11 +13,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.create_note_fragment.*
 import org.jetbrains.anko.toast
+import pzy64.xnotes.R
 import pzy64.xnotes.databinding.CreateNoteFragmentBinding
 import pzy64.xnotes.ui.Colors
 import pzy64.xnotes.ui.Fonts
 import kotlin.math.hypot
-import pzy64.xnotes.R
 
 class CreateNoteFragment : Fragment() {
 
@@ -48,6 +48,7 @@ class CreateNoteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.create_note_fragment, container, false)
+        binding.lifecycleOwner = this
         return binding.root
     }
 
@@ -56,14 +57,14 @@ class CreateNoteFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(CreateNoteViewModel::class.java)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
         setupUi()
+
     }
 
     private fun setupUi() {
 
         viewModel.currentColorIndex.observe(this, Observer {
-            it?.let {index ->
+            it?.let { index ->
                 changeBg(Colors.COLORS[index])
             }
         })
@@ -109,7 +110,7 @@ class CreateNoteFragment : Fragment() {
         animator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {}
             override fun onAnimationEnd(animation: Animator?) {
-                if(context != null) {
+                if (context != null) {
                     containerLayout.setBackgroundColor(color)
                     colorRevealingLayout.visibility = View.GONE
                 }
@@ -143,5 +144,4 @@ class CreateNoteFragment : Fragment() {
         }
         return false
     }
-
 }
