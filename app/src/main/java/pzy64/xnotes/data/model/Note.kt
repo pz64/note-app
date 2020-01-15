@@ -11,5 +11,6 @@ class Note(
     @PrimaryKey val id: Int = 0,
     @ColumnInfo(name = "title")val title:String,
     @ColumnInfo(name ="content") val description:String,
-    @ColumnInfo(name= "color") val color:Int = 0
+    @ColumnInfo(name= "color") val color:Int = 0,
+    @ColumnInfo(name = "last_updated") val lastUpdated:Long
 )

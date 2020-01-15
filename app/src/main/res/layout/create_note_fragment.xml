@@ -14,30 +14,38 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        app:cardCornerRadius="16dp"
-        app:cardUseCompatPadding="true"
         android:layout_height="match_parent"
-        >
+        app:cardCornerRadius="16dp"
+        app:cardUseCompatPadding="true">
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
             android:id="@+id/containerLayout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.create.CreateNoteFragment">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_pattern" />
 
 
             <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                android:id="@+id/colorRevealingLayout"
                 android:layout_width="match_parent"
-                app:cardElevation="0dp"
-                app:cardCornerRadius="16dp"
-
-                app:cardBackgroundColor="@color/yellow_200"
                 android:layout_height="match_parent"
-                android:id="@+id/colorRevealingLayout"/>
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_pattern" />
+            </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titleEdittext"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -56,6 +64,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/contentsEdittext"
+                style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"

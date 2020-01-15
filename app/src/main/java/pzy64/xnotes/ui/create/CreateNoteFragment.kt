@@ -64,10 +64,7 @@ class CreateNoteFragment : Fragment() {
 
         viewModel.currentColorIndex.observe(this, Observer {
             it?.let {index ->
-
                 changeBg(Colors.COLORS[index])
-
-
             }
         })
     }

@@ -22,8 +22,10 @@ class MainActivity : AppCompatActivity() {
 
         navController = Navigation.findNavController(this, R.id.navigationController)
 
-            setupUi()
+        setupUi()
     }
+
+
 
     private fun setupUi() {
 

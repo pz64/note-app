@@ -4,7 +4,7 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputEditText
 import org.jetbrains.anko.toast
 
-object BinderAdsapters {
+object BindingAdapters {
 
     @BindingAdapter("boldFont")
     @JvmStatic
