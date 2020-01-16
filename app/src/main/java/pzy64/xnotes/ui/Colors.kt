@@ -1,7 +1,12 @@
 package pzy64.xnotes.ui
 
+import android.graphics.Color
+
 
 object Colors {
+     fun getColorWithAlpha(color: Int, ratio: Float): Int {
+        return Color.argb(Math.round(Color.alpha(color) * ratio), Color.red(color), Color.green(color), Color.blue(color))
+    }
     val COLORS = arrayOf(
         0xFFFAFAFA.toInt(),
         0xFFFFCDD2.toInt(),

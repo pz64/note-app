@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="note"
+            type="pzy64.xnotes.data.model.Note" />
+    </data>
+
+    <FrameLayout
+        android:layout_margin="2dp"
+        android:id="@+id/containerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="Title"
+                android:padding="8dp"
+                android:text="@={note.title}"
+                android:textSize="16sp"
+                app:boldFont="@{note.font}" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:focusable="true"
+                android:hint="Content"
+                android:padding="8dp"
+                android:text="@={note.content}"
+                android:textSize="14sp"
+                app:regularFont="@{note.font}" />
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>

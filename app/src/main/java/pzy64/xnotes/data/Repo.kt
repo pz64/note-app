@@ -18,9 +18,14 @@ class Repo private constructor(private val appDb: AppDb) {
 
     }
 
-   suspend fun createNote(note: Note) {
+    suspend fun createNote(note: Note) {
         withContext(Dispatchers.IO) {
             appDb.userDao().insert(note)
         }
     }
+
+    suspend fun getNotes(): List<Note> = withContext(Dispatchers.IO) {
+        appDb.userDao().getNotes()
+    }
+
 }

@@ -40,7 +40,7 @@
             </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titleEdittext"
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="0dp"
@@ -60,7 +60,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/contentsEdittext"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="0dp"

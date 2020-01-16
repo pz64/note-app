@@ -1,9 +1,8 @@
 package pzy64.xnotes.ui.create
 
 import android.util.Log
+import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -24,10 +23,8 @@ class CreateNoteViewModel(private val repo: Repo) : ViewModel() {
 
     val currentFontIndex = MutableLiveData(0)
 
-    @Bindable
     val title = MutableLiveData<String>()
 
-    @Bindable
     val content = MutableLiveData<String>()
 
     private val currentNote = MutableLiveData<Note>()
