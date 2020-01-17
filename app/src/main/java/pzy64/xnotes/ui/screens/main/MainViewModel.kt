@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
+import kotlinx.coroutines.GlobalScope
 import pzy64.xnotes.data.Repo
 import pzy64.xnotes.data.model.Note
 

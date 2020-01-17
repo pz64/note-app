@@ -10,8 +10,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.jetbrains.anko.toast
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
+import pzy64.xnotes.data.eventbusmodel.Action
+import pzy64.xnotes.data.eventbusmodel.EditNoteModel
+import pzy64.xnotes.data.eventbusmodel.FabButtonActionModel
+import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment
 
 class MainFragment : Pz64Fragment() {
@@ -21,7 +28,15 @@ class MainFragment : Pz64Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+
     private lateinit var factory: MainViewModel.Factory
+
+    private val placeHolderLoading = "LOADING.."
+    private val placeholderAddNote = "ADD\nNOTE"
+
+    private val noteClicked: (Note) -> Unit = { note ->
+        EventBus.getDefault().post(EditNoteModel(note))
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,22 +59,31 @@ class MainFragment : Pz64Fragment() {
     }
 
     private fun setupUi() {
+        placeHolder.text = placeHolderLoading
+        placeHolder.visibility = View.VISIBLE
+
+        placeHolder.setOnClickListener {
+            if (placeHolder.text == placeholderAddNote) {
+                EventBus.getDefault().post(FabButtonActionModel(Action.CREATE_NOTE))
+            }
+        }
 
         val layoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
         notesRecyclerView.layoutManager = layoutManager
 
-        viewModel.getNotes().observe(this, Observer {
-            it?.let { notes ->
+        launch {
+            viewModel.getNotes().observe(this@MainFragment, Observer {
+                it?.let { notes ->
 
-                if (notes.isNotEmpty()) {
-                    notesRecyclerView.adapter = NotesAdapter(notes)
-                    emptyNotePlaceHolder.visibility = View.GONE
+                    if (notes.isNotEmpty()) {
+                        notesRecyclerView.adapter = NotesAdapter(notes, noteClicked)
+                        placeHolder.visibility = View.GONE
+                    } else {
+                        placeHolder.text = placeholderAddNote
+                        placeHolder.visibility = View.VISIBLE
+                    }
                 }
-                else {
-                    emptyNotePlaceHolder.visibility = View.VISIBLE
-                }
-            }
-        })
+            })
+        }
     }
-
 }

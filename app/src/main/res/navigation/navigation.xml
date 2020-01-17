@@ -23,5 +23,14 @@
         android:id="@+id/destinationCreateNote"
         android:name="pzy64.xnotes.ui.screens.create.CreateNoteFragment"
         android:label="create_note_fragment"
-        tools:layout="@layout/create_note_fragment" />
+        tools:layout="@layout/create_note_fragment" >
+        <argument
+            android:name="note"
+            app:argType="pzy64.xnotes.data.model.Note"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="editMode"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

@@ -14,8 +14,10 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pzy64.xnotes.R
 import pzy64.xnotes.data.eventbusmodel.Action
+import pzy64.xnotes.data.eventbusmodel.EditNoteModel
 import pzy64.xnotes.data.eventbusmodel.FabButtonActionModel
 import pzy64.xnotes.data.eventbusmodel.ReplyModel
+import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.delayed
 import pzy64.xnotes.ui.screens.main.MainFragmentDirections
 
@@ -51,13 +53,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: ReplyModel) {
+    fun messageFromCreatePaste(event: ReplyModel) {
         when (event.action) {
             Action.NOTE_SAVED -> {
                 navigateBacktOMainScreen()
             }
             Action.NOTE_DISMISSED -> {
                 navigateBacktOMainScreen()
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun messageFromMaiFragment(event: Any) {
+
+        when (event) {
+            is FabButtonActionModel -> {
+                when (event.action) {
+                    Action.CREATE_NOTE -> {
+                        navigateToCreateNote(editMode = false)
+                    }
+                }
+            }
+            is EditNoteModel -> {
+                navigateToCreateNote(note = event.note, editMode = true)
             }
         }
     }
@@ -73,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             when (navController.currentDestination?.id) {
 
                 R.id.destinationMainFragment -> {
-                    navigateToCreateNote()
+                    navigateToCreateNote(editMode = false)
                 }
                 R.id.destinationCreateNote -> {
                     EventBus.getDefault().post(FabButtonActionModel(Action.SAVE_NOTE))
@@ -82,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateToCreateNote() {
+    private fun navigateToCreateNote(note: Note? = null, editMode: Boolean) {
         bottomAppBar.menu.clear()
 
         faButton.hide()
@@ -110,7 +129,8 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        val destination = MainFragmentDirections.createNote()
+        val destination = MainFragmentDirections.createNote(editMode)
+        destination.note = note
         navController.navigate(destination)
     }
 

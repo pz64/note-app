@@ -12,7 +12,7 @@ import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.databinding.RowNoteBinding
 import pzy64.xnotes.ui.Colors
 
-class NotesAdapter(val data: List<Note>) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+class NotesAdapter(val data: List<Note>, val onClick: (Note) -> Unit) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,7 +26,7 @@ class NotesAdapter(val data: List<Note>) : RecyclerView.Adapter<NotesAdapter.Vie
         holder.bind(data[position])
     }
 
-    class ViewHolder(private val itemBinding: RowNoteBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+  inner  class ViewHolder(private val itemBinding: RowNoteBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(note: Note) {
             itemBinding.note = note
             val model = ShapeAppearanceModel().toBuilder().setAllCorners(CornerFamily.ROUNDED,20f).build()
@@ -37,6 +37,10 @@ class NotesAdapter(val data: List<Note>) : RecyclerView.Adapter<NotesAdapter.Vie
             shapeDrawable.setStroke(2f, ColorStateList.valueOf(strokeColor))
             shapeDrawable.fillColor = ColorStateList.valueOf(Colors.bg(note.color, 0x1A))
             ViewCompat.setBackground(itemBinding.containerLayout, shapeDrawable)
+
+            itemBinding.containerLayout.setOnClickListener {
+                onClick(note)
+            }
         }
     }
 }

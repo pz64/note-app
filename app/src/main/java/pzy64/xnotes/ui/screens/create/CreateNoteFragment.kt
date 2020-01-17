@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,6 +22,7 @@ import pzy64.xnotes.data.eventbusmodel.Action
 import pzy64.xnotes.data.eventbusmodel.FabButtonActionModel
 import pzy64.xnotes.data.eventbusmodel.ReplyModel
 import pzy64.xnotes.databinding.CreateNoteFragmentBinding
+import pzy64.xnotes.delayed
 import pzy64.xnotes.ui.Colors
 import pzy64.xnotes.ui.Fonts
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment
@@ -28,11 +30,14 @@ import kotlin.math.hypot
 
 class CreateNoteFragment : Pz64Fragment() {
 
+
     private lateinit var viewModel: CreateNoteViewModel
     private lateinit var binding: CreateNoteFragmentBinding
 
     private lateinit var fonts: Fonts
     private lateinit var factory: CreateNoteViewModel.Factory
+
+    private var editMode = true
 
     override fun onStart() {
         super.onStart()
@@ -70,38 +75,51 @@ class CreateNoteFragment : Pz64Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, factory).get(CreateNoteViewModel::class.java)
+
+        CreateNoteFragmentArgs.fromBundle(arguments?: Bundle()).also {
+            viewModel.currentNote.value = it.note
+            editMode = it.editMode
+        }
+
         binding.viewModel = viewModel
+
         setupUi()
 
     }
 
     private fun setupUi() {
 
+        titleEdittext.requestFocus()
+
+        delayed(600) {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(titleEdittext, InputMethodManager.SHOW_IMPLICIT)
+        }
+
         viewModel.currentColorIndex.observe(this, Observer {
             it?.let { index ->
                 changeBg(Colors.bg(index, 0x3A))
             }
         })
-
         viewModel.noteSaved.observe(this, Observer {
             if (it == true) {
                 EventBus.getDefault().post(ReplyModel(Action.NOTE_SAVED))
             }
         })
         viewModel.noteDismissed.observe(this, Observer {
-            if(it == true) {
+            if (it == true) {
                 EventBus.getDefault().post(ReplyModel(Action.NOTE_DISMISSED))
             }
         })
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: FabButtonActionModel) {
+    fun messageFromMainActivity(event: FabButtonActionModel) {
         when (event.action) {
             Action.SAVE_NOTE -> {
-               launch {
-                   viewModel.saveNote()
-               }
+                launch {
+                    viewModel.saveNote()
+                }
             }
 
         }

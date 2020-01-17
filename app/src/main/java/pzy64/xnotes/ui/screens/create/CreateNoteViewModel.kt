@@ -1,7 +1,7 @@
 package pzy64.xnotes.ui.screens.create
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import pzy64.xnotes.data.Repo
@@ -25,10 +25,22 @@ class CreateNoteViewModel(private val repo: Repo) : ViewModel() {
 
     val content = MutableLiveData<String>()
 
-    private val currentNote = MutableLiveData<Note>()
+    val currentNote = MutableLiveData<Note>()
 
     val noteSaved = MutableLiveData(false)
     val noteDismissed = MutableLiveData(false)
+
+    init {
+
+        currentNote.observeForever {
+            it?.let {
+                title.value = it.title
+                content.value = it.content
+                currentColorIndex.value = it.color
+                currentFontIndex.value = it.font
+            }
+        }
+    }
 
     suspend fun saveNote() {
 
@@ -46,7 +58,7 @@ class CreateNoteViewModel(private val repo: Repo) : ViewModel() {
             if (note.content.isNotEmpty() || note.title.isNotEmpty()) {
                 repo.createNote(note)
                 noteSaved.postValue(true)
-            }else {
+            } else {
                 noteDismissed.value = true
             }
         }

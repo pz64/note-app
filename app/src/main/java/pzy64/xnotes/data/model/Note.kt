@@ -1,5 +1,7 @@
 package pzy64.xnotes.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -24,4 +26,36 @@ class Note(
     @ColumnInfo(name = COLUMN_FONT) var font: Int = 0,
 
     @ColumnInfo(name = COLUMN_LASTUPDATED) var lastUpdated: Long
-)
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString()?: "",
+        parcel.readString() ?: "",
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readLong()
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(title)
+        parcel.writeString(content)
+        parcel.writeInt(color)
+        parcel.writeInt(font)
+        parcel.writeLong(lastUpdated)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Note> {
+        override fun createFromParcel(parcel: Parcel): Note {
+            return Note(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Note?> {
+            return arrayOfNulls(size)
+        }
+    }
+}

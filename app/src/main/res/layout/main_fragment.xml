@@ -14,12 +14,11 @@
         android:background="@drawable/bg_pattern" />
 
     <TextView
-        android:id="@+id/emptyNotePlaceHolder"
+        android:id="@+id/placeHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fontFamily="@font/cabin_sketch_bold"
         android:gravity="center"
-        android:text="ADD\nNOTE"
         android:textSize="42sp" />
 
 </FrameLayout>
