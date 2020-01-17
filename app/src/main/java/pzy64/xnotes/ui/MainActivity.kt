@@ -17,7 +17,7 @@ import pzy64.xnotes.data.eventbusmodel.Action
 import pzy64.xnotes.data.eventbusmodel.FabButtonActionModel
 import pzy64.xnotes.data.eventbusmodel.ReplyModel
 import pzy64.xnotes.delayed
-import pzy64.xnotes.ui.main.MainFragmentDirections
+import pzy64.xnotes.ui.screens.main.MainFragmentDirections
 
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +54,9 @@ class MainActivity : AppCompatActivity() {
     fun onMessageEvent(event: ReplyModel) {
         when (event.action) {
             Action.NOTE_SAVED -> {
+                navigateBacktOMainScreen()
+            }
+            Action.NOTE_DISMISSED -> {
                 navigateBacktOMainScreen()
             }
         }
@@ -129,6 +132,18 @@ class MainActivity : AppCompatActivity() {
             faButton.show()
         }
         navController.popBackStack()
+    }
+
+    override fun onBackPressed() {
+        when (navController.currentDestination?.id) {
+            R.id.destinationCreateNote -> {
+                EventBus.getDefault().post(FabButtonActionModel(Action.SAVE_NOTE))
+            }
+            R.id.destinationMainFragment -> {
+                super.onBackPressed()
+            }
+        }
+
     }
 
 }

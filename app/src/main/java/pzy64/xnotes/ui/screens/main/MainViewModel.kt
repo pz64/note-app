@@ -1,4 +1,4 @@
-package pzy64.xnotes.ui.main
+package pzy64.xnotes.ui.screens.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

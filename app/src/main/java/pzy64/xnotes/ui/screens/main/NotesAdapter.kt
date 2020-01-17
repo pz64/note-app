@@ -1,8 +1,6 @@
-package pzy64.xnotes.ui.main
+package pzy64.xnotes.ui.screens.main
 
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
@@ -33,8 +31,11 @@ class NotesAdapter(val data: List<Note>) : RecyclerView.Adapter<NotesAdapter.Vie
             itemBinding.note = note
             val model = ShapeAppearanceModel().toBuilder().setAllCorners(CornerFamily.ROUNDED,20f).build()
             val shapeDrawable = MaterialShapeDrawable(model)
-            shapeDrawable.setStroke(4f, ColorStateList.valueOf(Colors.COLORS[note.color]))
-            shapeDrawable.fillColor = ColorStateList.valueOf(Color.TRANSPARENT)
+
+            val strokeColor = if (Colors.bg(note.color, 0xff)  == Colors.bg(0,0xff)) 0xffbababa.toInt() else Colors.bg(note.color, 0xff)
+
+            shapeDrawable.setStroke(2f, ColorStateList.valueOf(strokeColor))
+            shapeDrawable.fillColor = ColorStateList.valueOf(Colors.bg(note.color, 0x1A))
             ViewCompat.setBackground(itemBinding.containerLayout, shapeDrawable)
         }
     }

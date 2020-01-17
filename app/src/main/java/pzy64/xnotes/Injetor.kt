@@ -3,8 +3,8 @@ package pzy64.xnotes
 import android.content.Context
 import pzy64.xnotes.data.AppDb
 import pzy64.xnotes.data.Repo
-import pzy64.xnotes.ui.create.CreateNoteViewModel
-import pzy64.xnotes.ui.main.MainViewModel
+import pzy64.xnotes.ui.screens.create.CreateNoteViewModel
+import pzy64.xnotes.ui.screens.main.MainViewModel
 
 object Injetor{
 

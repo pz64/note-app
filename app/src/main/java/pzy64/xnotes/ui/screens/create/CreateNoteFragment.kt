@@ -1,10 +1,9 @@
-package pzy64.xnotes.ui.create
+package pzy64.xnotes.ui.screens.create
 
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import androidx.databinding.DataBindingUtil
@@ -80,13 +79,18 @@ class CreateNoteFragment : Pz64Fragment() {
 
         viewModel.currentColorIndex.observe(this, Observer {
             it?.let { index ->
-                changeBg(Colors.COLORS[index])
+                changeBg(Colors.bg(index, 0x3A))
             }
         })
 
         viewModel.noteSaved.observe(this, Observer {
             if (it == true) {
                 EventBus.getDefault().post(ReplyModel(Action.NOTE_SAVED))
+            }
+        })
+        viewModel.noteDismissed.observe(this, Observer {
+            if(it == true) {
+                EventBus.getDefault().post(ReplyModel(Action.NOTE_DISMISSED))
             }
         })
     }
@@ -107,7 +111,7 @@ class CreateNoteFragment : Pz64Fragment() {
 
         colorRevealingLayout.visibility = View.GONE
 
-        colorRevealingLayout.setCardBackgroundColor(color)
+        colorRevealingLayoutBg.setBackgroundColor(color)
 
         val displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
@@ -166,7 +170,7 @@ class CreateNoteFragment : Pz64Fragment() {
 
             R.id.actionChangeColor -> {
                 val index = viewModel.currentColorIndex.value ?: 0
-                val size = Colors.COLORS.size
+                val size = Colors.size
 
                 viewModel.currentColorIndex.value = (index + 1) % size
             }

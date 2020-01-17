@@ -1,24 +1,33 @@
 package pzy64.xnotes.ui
 
 import android.graphics.Color
+import androidx.core.graphics.ColorUtils
 
 
 object Colors {
-     fun getColorWithAlpha(color: Int, ratio: Float): Int {
-        return Color.argb(Math.round(Color.alpha(color) * ratio), Color.red(color), Color.green(color), Color.blue(color))
-    }
-    val COLORS = arrayOf(
+
+    val size get()= COLORS.size
+
+    fun bg(index: Int, alpha: Int) = ColorUtils.setAlphaComponent(COLORS[index], alpha)
+
+    fun blendInWhite(index: Int, alpha: Int) = ColorUtils.blendARGB(bg(index, alpha),0xFFFFFF,0.5f)
+
+    private val COLORS = arrayOf(
         0xFFFAFAFA.toInt(),
-        0xFFFFCDD2.toInt(),
-        0xFFF8BBD0.toInt(),
-        0xFFE1BEE7.toInt(),
-        0xFFB3E5FC.toInt(),
-        0xFFB2DFDB.toInt(),
-        0xFFC8E6C9.toInt(),
-        0xFFDCEDC8.toInt(),
-        0xFFF0F4C3.toInt(),
-        0xFFFFF9C4.toInt(),
-        0xFFFFECB3.toInt(),
-        0xFFFFE0B2.toInt()
-    )
+        0xFF9E9E9E.toInt(),
+        0xFFF44336.toInt(),
+        0xFF673AB7.toInt(),
+        0xFF03A9F4.toInt(),
+        0xFF4CAF50.toInt(),
+        0xFF009688.toInt(),
+        0xFFFFEB3B.toInt(),
+
+        0xFFF50057.toInt(),
+        0xFF9C27B0.toInt(),
+        0xFF2196F3.toInt(),
+        0xFF009688.toInt(),
+        0xFFEEFF41.toInt(),
+        0xFF76FF03.toInt(),
+        0xFF1DE9B6.toInt()
+        )
 }

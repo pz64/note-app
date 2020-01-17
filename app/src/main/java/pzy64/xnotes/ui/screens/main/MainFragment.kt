@@ -1,4 +1,4 @@
-package pzy64.xnotes.ui.main
+package pzy64.xnotes.ui.screens.main
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
-import org.jetbrains.anko.toast
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment

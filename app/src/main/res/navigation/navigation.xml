@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/destinationMainFragment"
-        android:name="pzy64.xnotes.ui.main.MainFragment"
+        android:name="pzy64.xnotes.ui.screens.main.MainFragment"
         android:label="main_fragment"
         tools:layout="@layout/main_fragment" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/destinationCreateNote"
-        android:name="pzy64.xnotes.ui.create.CreateNoteFragment"
+        android:name="pzy64.xnotes.ui.screens.create.CreateNoteFragment"
         android:label="create_note_fragment"
         tools:layout="@layout/create_note_fragment" />
 </navigation>

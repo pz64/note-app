@@ -4,5 +4,6 @@ class FabButtonActionModel(val action: Action)
 
 enum class Action   {
     SAVE_NOTE,
-    NOTE_SAVED
+    NOTE_SAVED,
+    NOTE_DISMISSED
 }

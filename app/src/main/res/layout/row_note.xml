@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="note"
             type="pzy64.xnotes.data.model.Note" />
+        <import type="android.view.View"/>
+        <import type="pzy64.xnotes.ui.databinding.BindingHelpers" />
     </data>
 
     <FrameLayout
-        android:layout_margin="2dp"
         android:id="@+id/containerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="2dp"
         android:orientation="vertical"
         app:cardUseCompatPadding="true">
 
@@ -27,11 +30,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
-                android:hint="Title"
                 android:padding="8dp"
-                android:text="@={note.title}"
+                android:text="@{note.title}"
+                android:visibility="@{note.title.isEmpty() ? View.GONE : View.VISIBLE}"
                 android:textSize="16sp"
-                app:boldFont="@{note.font}" />
+                app:boldFont="@{note.font}"
+                tools:text="Title" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Headline"
@@ -39,11 +43,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:focusable="true"
-                android:hint="Content"
                 android:padding="8dp"
-                android:text="@={note.content}"
+                android:text="@{BindingHelpers.ellipsize(note.content, 512)}"
+                android:visibility="@{note.content.isEmpty() ? View.GONE : View.VISIBLE}"
                 android:textSize="14sp"
-                app:regularFont="@{note.font}" />
+                app:regularFont="@{note.font}"
+                tools:text="Content" />
         </LinearLayout>
 
     </FrameLayout>

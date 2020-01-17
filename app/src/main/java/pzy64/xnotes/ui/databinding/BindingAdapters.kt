@@ -1,12 +1,11 @@
-package pzy64.xnotes.ui
+package pzy64.xnotes.ui.databinding
 
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
-import org.jetbrains.anko.toast
+import pzy64.xnotes.ui.Colors
+import pzy64.xnotes.ui.Fonts
 
 object BindingAdapters {
 
@@ -37,6 +36,6 @@ object BindingAdapters {
     @BindingAdapter("backgroundColor")
     @JvmStatic
     fun ViewGroup.cardBackgroundColor(index: Int)  {
-        setBackgroundColor(Colors.COLORS[index])
+        setBackgroundColor(Colors.bg(index, 0xaa))
     }
 }

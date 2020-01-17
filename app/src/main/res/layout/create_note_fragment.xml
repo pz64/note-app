@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="pzy64.xnotes.ui.create.CreateNoteViewModel" />
+            type="pzy64.xnotes.ui.screens.create.CreateNoteViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -16,31 +17,39 @@
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.create.CreateNoteFragment">
+            android:background="@drawable/bg_pattern"
+            tools:context=".ui.screens.create.CreateNoteFragment">
 
             <FrameLayout
+                android:id="@+id/containerLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_pattern" />
+                android:layout_height="match_parent" />
 
 
             <com.google.android.material.circularreveal.cardview.CircularRevealCardView
                 android:id="@+id/colorRevealingLayout"
                 android:layout_width="match_parent"
+                app:cardBackgroundColor="@color/white"
                 android:layout_height="match_parent"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
                 <FrameLayout
+                    android:id="@+id/colorRevealingLayoutBg"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_pattern" />
+                    android:layout_height="match_parent">
+                    <FrameLayout
+                        android:background="@drawable/bg_pattern"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </FrameLayout>
+
             </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
 
             <com.google.android.material.textfield.TextInputEditText
+                android:maxLength="64"
                 android:id="@+id/titleEdittext"
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="0dp"
@@ -51,29 +60,30 @@
                 android:background="@android:color/transparent"
                 android:focusable="true"
                 android:hint="Title"
-                android:text="@={viewModel.title}"
                 android:inputType="textShortMessage"
                 android:nextFocusDown="@id/contentsEdittext"
                 android:padding="16dp"
+                android:text="@={viewModel.title}"
                 app:boldFont="@{viewModel.currentFontIndex}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:maxLength="1024"
                 android:id="@+id/contentsEdittext"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:text="@={viewModel.content}"
                 android:background="@android:color/transparent"
                 android:gravity="start|top"
                 android:hint="Content"
                 android:inputType="textMultiLine"
                 android:lines="20"
                 android:padding="16dp"
+                android:text="@={viewModel.content}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
