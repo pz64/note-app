@@ -2,24 +2,24 @@ package pzy64.xnotes.ui.screens.main
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.toast
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
-import pzy64.xnotes.data.eventbusmodel.Action
-import pzy64.xnotes.data.eventbusmodel.EditNoteModel
-import pzy64.xnotes.data.eventbusmodel.FabButtonActionModel
 import pzy64.xnotes.data.model.Note
+import pzy64.xnotes.toast
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment
+import pzy64.xnotes.ui.screens.Pz64ViewModel
 
 class MainFragment : Pz64Fragment() {
 
@@ -27,20 +27,22 @@ class MainFragment : Pz64Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: Pz64ViewModel
 
-    private lateinit var factory: MainViewModel.Factory
+    private lateinit var factory: Pz64ViewModel.Factory
 
     private val placeHolderLoading = "LOADING.."
     private val placeholderAddNote = "ADD\nNOTE"
 
     private val noteClicked: (Note) -> Unit = { note ->
-        EventBus.getDefault().post(EditNoteModel(note))
+        viewModel.currentNote.value = note
+        viewModel.editMode.value = true
+        findNavController().navigate(R.id.destinationCreateNote)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        factory = Injetor.provideMainVMFactory(context.applicationContext)
+        factory = Injetor.provideVMFactory(context.applicationContext)
     }
 
     override fun onCreateView(
@@ -52,10 +54,11 @@ class MainFragment : Pz64Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        activity?.apply {
+            viewModel = ViewModelProviders.of(this, factory).get(Pz64ViewModel::class.java)
 
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-
-        setupUi()
+            setupUi()
+        }
     }
 
     private fun setupUi() {
@@ -64,7 +67,7 @@ class MainFragment : Pz64Fragment() {
 
         placeHolder.setOnClickListener {
             if (placeHolder.text == placeholderAddNote) {
-                EventBus.getDefault().post(FabButtonActionModel(Action.CREATE_NOTE))
+                findNavController().navigate(R.id.destinationCreateNote)
             }
         }
 
@@ -73,8 +76,8 @@ class MainFragment : Pz64Fragment() {
 
         launch {
             viewModel.getNotes().observe(this@MainFragment, Observer {
-                it?.let { notes ->
 
+                it?.let { notes ->
                     if (notes.isNotEmpty()) {
                         notesRecyclerView.adapter = NotesAdapter(notes, noteClicked)
                         placeHolder.visibility = View.GONE

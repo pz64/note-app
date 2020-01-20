@@ -3,56 +3,42 @@ package pzy64.xnotes.ui.screens.create
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
+import android.view.View.NOT_FOCUSABLE
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.create_note_fragment.*
-import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.toast
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
-import pzy64.xnotes.data.eventbusmodel.Action
-import pzy64.xnotes.data.eventbusmodel.FabButtonActionModel
-import pzy64.xnotes.data.eventbusmodel.ReplyModel
 import pzy64.xnotes.databinding.CreateNoteFragmentBinding
 import pzy64.xnotes.delayed
 import pzy64.xnotes.ui.Colors
 import pzy64.xnotes.ui.Fonts
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment
+import pzy64.xnotes.ui.screens.Pz64ViewModel
 import kotlin.math.hypot
 
 class CreateNoteFragment : Pz64Fragment() {
 
 
-    private lateinit var viewModel: CreateNoteViewModel
+    private lateinit var viewModel: Pz64ViewModel
     private lateinit var binding: CreateNoteFragmentBinding
 
     private lateinit var fonts: Fonts
-    private lateinit var factory: CreateNoteViewModel.Factory
+    private lateinit var factory: Pz64ViewModel.Factory
 
-    private var editMode = true
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        EventBus.getDefault().unregister(this)
-        super.onStop()
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fonts = Fonts(context)
-        factory = Injetor.provideCreateNoteVMFactory(context.applicationContext)
+        factory = Injetor.provideVMFactory(context.applicationContext)
     }
 
 
@@ -67,62 +53,48 @@ class CreateNoteFragment : Pz64Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.create_note_fragment, container, false)
-        binding.lifecycleOwner = this
         return binding.root
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        activity?.apply {
+            viewModel = ViewModelProviders.of(this, factory).get(Pz64ViewModel::class.java)
+            binding.viewModel = viewModel
+            binding.lifecycleOwner = this
 
-        viewModel = ViewModelProviders.of(this, factory).get(CreateNoteViewModel::class.java)
-
-        CreateNoteFragmentArgs.fromBundle(arguments?: Bundle()).also {
-            viewModel.currentNote.value = it.note
-            editMode = it.editMode
+            setupUi()
         }
-
-        binding.viewModel = viewModel
-
-        setupUi()
-
     }
+
 
     private fun setupUi() {
 
-        titleEdittext.requestFocus()
+        viewModel.editMode.observe(this, Observer { editMode ->
+            if (editMode == false) {
+                contentsEdittext.isFocusableInTouchMode = true
+                titleEdittext.isFocusableInTouchMode = true
+                titleEdittext.requestFocus()
 
-        delayed(600) {
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(titleEdittext, InputMethodManager.SHOW_IMPLICIT)
-        }
+                delayed(750) {
+                    val imm =
+                        context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.showSoftInput(titleEdittext, InputMethodManager.SHOW_IMPLICIT)
+                }
+
+            } else {
+                contentsEdittext.isFocusableInTouchMode = false
+                titleEdittext.isFocusableInTouchMode = false
+            }
+        })
 
         viewModel.currentColorIndex.observe(this, Observer {
             it?.let { index ->
                 changeBg(Colors.bg(index, 0x3A))
             }
         })
-        viewModel.noteSaved.observe(this, Observer {
-            if (it == true) {
-                EventBus.getDefault().post(ReplyModel(Action.NOTE_SAVED))
-            }
-        })
-        viewModel.noteDismissed.observe(this, Observer {
-            if (it == true) {
-                EventBus.getDefault().post(ReplyModel(Action.NOTE_DISMISSED))
-            }
-        })
-    }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun messageFromMainActivity(event: FabButtonActionModel) {
-        when (event.action) {
-            Action.SAVE_NOTE -> {
-                launch {
-                    viewModel.saveNote()
-                }
-            }
-
-        }
     }
 
     private fun changeBg(color: Int) {

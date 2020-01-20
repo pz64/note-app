@@ -12,7 +12,8 @@ import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.databinding.RowNoteBinding
 import pzy64.xnotes.ui.Colors
 
-class NotesAdapter(val data: List<Note>, val onClick: (Note) -> Unit) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+class NotesAdapter(val data: List<Note>, val onClick: (Note) -> Unit) :
+    RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,13 +27,19 @@ class NotesAdapter(val data: List<Note>, val onClick: (Note) -> Unit) : Recycler
         holder.bind(data[position])
     }
 
-  inner  class ViewHolder(private val itemBinding: RowNoteBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class ViewHolder(private val itemBinding: RowNoteBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(note: Note) {
             itemBinding.note = note
-            val model = ShapeAppearanceModel().toBuilder().setAllCorners(CornerFamily.ROUNDED,20f).build()
+            val model =
+                ShapeAppearanceModel().toBuilder().setAllCorners(CornerFamily.ROUNDED, 20f).build()
             val shapeDrawable = MaterialShapeDrawable(model)
 
-            val strokeColor = if (Colors.bg(note.color, 0xff)  == Colors.bg(0,0xff)) 0xffbababa.toInt() else Colors.bg(note.color, 0xff)
+            val strokeColor = if (Colors.bg(note.color, 0xff) == Colors.bg(
+                    0,
+                    0xff
+                )
+            ) 0xffbababa.toInt() else Colors.bg(note.color, 0xff)
 
             shapeDrawable.setStroke(2f, ColorStateList.valueOf(strokeColor))
             shapeDrawable.fillColor = ColorStateList.valueOf(Colors.bg(note.color, 0x1A))

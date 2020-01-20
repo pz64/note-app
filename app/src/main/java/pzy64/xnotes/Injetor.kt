@@ -3,22 +3,15 @@ package pzy64.xnotes
 import android.content.Context
 import pzy64.xnotes.data.AppDb
 import pzy64.xnotes.data.Repo
-import pzy64.xnotes.ui.screens.create.CreateNoteViewModel
-import pzy64.xnotes.ui.screens.main.MainViewModel
+import pzy64.xnotes.ui.screens.Pz64ViewModel
 
 object Injetor{
 
-    fun provideCreateNoteVMFactory(appContext: Context): CreateNoteViewModel.Factory   {
+    fun provideVMFactory(appContext: Context): Pz64ViewModel.Factory   {
         val appDb = AppDb.getInstance(appContext)
         val repo = Repo.getInstance(appDb)
-        val factory = CreateNoteViewModel.Factory(repo)
+        val factory = Pz64ViewModel.Factory(repo)
         return factory
     }
 
-    fun provideMainVMFactory(appContext: Context): MainViewModel.Factory   {
-        val appDb = AppDb.getInstance(appContext)
-        val repo = Repo.getInstance(appDb)
-        val factory = MainViewModel.Factory(repo)
-        return factory
-    }
 }

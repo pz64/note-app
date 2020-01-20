@@ -5,10 +5,14 @@ import android.animation.ObjectAnimator
 import android.os.Handler
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.fragment.app.Fragment
+import org.jetbrains.anko.toast
 
 fun delayed(delay: Long = 300, block: () -> Unit) {
     Handler().postDelayed({ block() }, delay)
 }
+
+fun Fragment.toast(msg: String) = context?.toast(msg)
 
 
 fun View.scaleInAnim(delay: Long = 500): AnimatorSet {

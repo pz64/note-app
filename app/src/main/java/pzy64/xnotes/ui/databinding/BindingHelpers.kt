@@ -6,6 +6,6 @@ object BindingHelpers {
     fun ellipsize(input: String, maxLength: Int): String {
         return if (input.length < maxLength) {
             input
-        } else input.substring(0, maxLength) + " ..."
+        } else input.substring(0, maxLength)+ " ..."
     }
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="pzy64.xnotes.ui.screens.create.CreateNoteViewModel" />
+            type="pzy64.xnotes.ui.screens.Pz64ViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -81,7 +81,7 @@
                 android:gravity="start|top"
                 android:hint="Content"
                 android:inputType="textMultiLine"
-                android:lines="20"
+                android:minLines="30"
                 android:padding="16dp"
                 android:text="@={viewModel.content}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -90,9 +90,9 @@
                 app:layout_constraintTop_toBottomOf="@id/titleEdittext"
                 app:regularFont="@{viewModel.currentFontIndex}" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
 
+
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

@@ -5,9 +5,10 @@
     android:background="@color/grey_100"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.screens.MainActivity">
 
     <fragment
+
         android:id="@+id/navigationController"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"

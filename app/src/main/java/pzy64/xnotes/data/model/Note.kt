@@ -7,15 +7,16 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import pzy64.xnotes.data.TABLE_NAME
 
-const val COLUMN_TITLE  = "title"
+const val COLUMN_ID = "uid"
+const val COLUMN_TITLE = "title"
 const val COLUMN_CONTENT = "content"
 const val COLUMN_COLOR = "color"
 const val COLUMN_FONT = "font"
 const val COLUMN_LASTUPDATED = "last_updated"
 
 @Entity(tableName = TABLE_NAME)
-class Note(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+data class Note(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID) val id: Int = 0,
 
     @ColumnInfo(name = COLUMN_TITLE) var title: String,
 
@@ -26,10 +27,11 @@ class Note(
     @ColumnInfo(name = COLUMN_FONT) var font: Int = 0,
 
     @ColumnInfo(name = COLUMN_LASTUPDATED) var lastUpdated: Long
+
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
-        parcel.readString()?: "",
+        parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readInt(),
         parcel.readInt(),

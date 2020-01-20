@@ -1,16 +1,16 @@
 package pzy64.xnotes.ui
 
-import android.graphics.Color
 import androidx.core.graphics.ColorUtils
 
 
 object Colors {
 
-    val size get()= COLORS.size
+    val size get() = COLORS.size
 
     fun bg(index: Int, alpha: Int) = ColorUtils.setAlphaComponent(COLORS[index], alpha)
 
-    fun blendInWhite(index: Int, alpha: Int) = ColorUtils.blendARGB(bg(index, alpha),0xFFFFFF,0.5f)
+    fun blendInWhite(index: Int, alpha: Int) =
+        ColorUtils.blendARGB(bg(index, alpha), 0xFFFFFF, 0.5f)
 
     private val COLORS = arrayOf(
         0xFFFAFAFA.toInt(),
@@ -29,5 +29,5 @@ object Colors {
         0xFFEEFF41.toInt(),
         0xFF76FF03.toInt(),
         0xFF1DE9B6.toInt()
-        )
+    )
 }
