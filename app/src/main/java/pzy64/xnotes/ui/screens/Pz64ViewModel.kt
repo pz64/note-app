@@ -47,8 +47,11 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
     }
 
     suspend fun saveNote() {
+
         var update = false
+
         if (currentNote.value == null) {
+
             val note = Note(
                 title = title.value?.trim() ?: "",
                 content = content.value?.trim() ?: "",
@@ -59,6 +62,7 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
             currentNote.value = note
 
         } else {
+
             update = true
             currentNote.value?.also {
                 it.title = title.value?.trim() ?: ""
@@ -70,6 +74,7 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
         }
 
         currentNote.value?.let { note ->
+
             if (note.content.isNotEmpty() || note.title.isNotEmpty()) {
                 if (update) {
                     repo.updateNote(note)
@@ -88,4 +93,7 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
             emit(repo.getNotes())
         }
 
+    suspend fun deleteNote(vararg note: Note) {
+        repo.deleteNotes(*note)
+    }
 }

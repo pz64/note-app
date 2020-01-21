@@ -1,58 +1,74 @@
 package pzy64.xnotes
 
+import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.os.Handler
+import android.app.Activity
+import android.content.Context
+import android.view.ContextMenu
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import org.jetbrains.anko.toast
 
-fun delayed(delay: Long = 300, block: () -> Unit) {
-    Handler().postDelayed({ block() }, delay)
-}
 
 fun Fragment.toast(msg: String) = context?.toast(msg)
 
 
-fun View.scaleInAnim(delay: Long = 500): AnimatorSet {
-
-    val scaleX = ObjectAnimator.ofFloat(this, "scaleX", 1.04f, 1.0f)
-    scaleX.duration = delay
-    scaleX.interpolator = DecelerateInterpolator(1f)
-
-    val scaleY = ObjectAnimator.ofFloat(this, "scaleY", 1.04f, 1.0f)
-    scaleY.duration = delay
-    scaleY.interpolator = DecelerateInterpolator(1f)
+fun View.scaleOutAnim(delay: Long = 500): AnimatorSet {
 
     val alpha = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f)
     alpha.duration = delay
     alpha.interpolator = DecelerateInterpolator(1f)
 
     val set = AnimatorSet()
-    set.playTogether(scaleX, scaleY, alpha)
+    set.playTogether(alpha)
     set.start()
 
     return set
 }
 
-fun View.scaleOutAnim(delay: Long = 500): AnimatorSet {
-
-    val scaleX = ObjectAnimator.ofFloat(this, "scaleX", 0.96f, 1.0f)
-    scaleX.duration = delay
-    scaleX.interpolator = DecelerateInterpolator(1f)
-
-    val scaleY = ObjectAnimator.ofFloat(this, "scaleY", 0.96f, 1.0f)
-    scaleY.duration = delay
-    scaleY.interpolator = DecelerateInterpolator(1f)
-
+fun View.show(delay: Long = 350) {
     val alpha = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f)
     alpha.duration = delay
     alpha.interpolator = DecelerateInterpolator(1f)
+    alpha.start()
+    alpha.addListener(object : Animator.AnimatorListener {
 
-    val set = AnimatorSet()
-    set.playTogether(scaleX, scaleY, alpha)
-    set.start()
+        override fun onAnimationRepeat(animation: Animator?) {}
+        override fun onAnimationCancel(animation: Animator?) {}
+        override fun onAnimationStart(animation: Animator?) {}
+        override fun onAnimationEnd(animation: Animator?) {
+            visibility = View.VISIBLE
+        }
+    })
+}
 
-    return set
+fun View.hide(delay: Long = 500) {
+    val alpha = ObjectAnimator.ofFloat(this, "alpha", 1f, 0f)
+    alpha.duration = delay
+    alpha.interpolator = DecelerateInterpolator(1f)
+    alpha.start()
+    alpha.addListener(object : Animator.AnimatorListener {
+
+        override fun onAnimationRepeat(animation: Animator?) {}
+        override fun onAnimationCancel(animation: Animator?) {}
+        override fun onAnimationStart(animation: Animator?) {}
+        override fun onAnimationEnd(animation: Animator?) {
+            visibility = View.GONE
+        }
+    })
+}
+
+fun Context.hideKeyboard(view:View){
+    val imm: InputMethodManager =
+        this.getSystemService(android.app.Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun Context.showKeyboard(view:View){
+    val imm: InputMethodManager =
+        this.getSystemService(android.app.Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
 }

@@ -10,9 +10,13 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.databinding.RowNoteBinding
+import pzy64.xnotes.scaleOutAnim
 import pzy64.xnotes.ui.Colors
 
-class NotesAdapter(val data: List<Note>, val onClick: (Note) -> Unit) :
+class NotesAdapter(
+    val data: MutableList<Note>,
+    private val onClick: (Note) -> Unit
+) :
     RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,29 +29,68 @@ class NotesAdapter(val data: List<Note>, val onClick: (Note) -> Unit) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(data[position])
+        holder.itemView.scaleOutAnim()
     }
 
     inner class ViewHolder(private val itemBinding: RowNoteBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(note: Note) {
             itemBinding.note = note
-            val model =
-                ShapeAppearanceModel().toBuilder().setAllCorners(CornerFamily.ROUNDED, 20f).build()
-            val shapeDrawable = MaterialShapeDrawable(model)
-
-            val strokeColor = if (Colors.bg(note.color, 0xff) == Colors.bg(
-                    0,
-                    0xff
-                )
-            ) 0xffbababa.toInt() else Colors.bg(note.color, 0xff)
-
-            shapeDrawable.setStroke(2f, ColorStateList.valueOf(strokeColor))
-            shapeDrawable.fillColor = ColorStateList.valueOf(Colors.bg(note.color, 0x1A))
-            ViewCompat.setBackground(itemBinding.containerLayout, shapeDrawable)
-
+            setCardColor(note, itemBinding)
             itemBinding.containerLayout.setOnClickListener {
                 onClick(note)
             }
+
+            itemBinding.containerLayout.setOnLongClickListener {
+                note.isSelected = !note.isSelected
+                setCardColor(note, itemBinding)
+
+                true
+            }
+
+        }
+    }
+
+    private fun setCardColor(note: Note, binding: RowNoteBinding) {
+        val model =
+            ShapeAppearanceModel().toBuilder().setAllCorners(CornerFamily.ROUNDED, 20f).build()
+        val shapeDrawable = MaterialShapeDrawable(model)
+
+        val strokeColor = if (Colors.bg(note.color, 0xff) == Colors.bg(
+                0,
+                0xff
+            )
+        ) 0xffbababa.toInt() else Colors.bg(note.color, 0xff)
+
+        if (note.isSelected) {
+
+            val alpha = 0xff
+
+            val color = if (Colors.bg(note.color, 0xff) == Colors.bg(
+                    0,
+                    0xff
+                )
+            ) 0xffbababa.toInt() else Colors.bg(note.color, alpha)
+
+            shapeDrawable.fillColor = ColorStateList.valueOf(color)
+            ViewCompat.setBackground(binding.containerLayout, shapeDrawable)
+
+            if (Colors.isDark(note.color, alpha)) {
+                binding.title.setTextColor(0xffffffff.toInt())
+                binding.content.setTextColor(0xffffffff.toInt())
+            } else {
+                binding.title.setTextColor(0xff000000.toInt())
+                binding.content.setTextColor(0xff000000.toInt())
+            }
+
+        } else {
+            val alpha = 0x1A
+            shapeDrawable.setStroke(2f, ColorStateList.valueOf(strokeColor))
+            shapeDrawable.fillColor = ColorStateList.valueOf(Colors.bg(note.color, alpha))
+            ViewCompat.setBackground(binding.containerLayout, shapeDrawable)
+
+            binding.title.setTextColor(0xff000000.toInt())
+            binding.content.setTextColor(0xff000000.toInt())
         }
     }
 }

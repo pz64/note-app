@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import pzy64.xnotes.data.TABLE_NAME
 
@@ -16,7 +17,7 @@ const val COLUMN_LASTUPDATED = "last_updated"
 
 @Entity(tableName = TABLE_NAME)
 data class Note(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = COLUMN_ID) var id: Int = 0,
 
     @ColumnInfo(name = COLUMN_TITLE) var title: String,
 
@@ -29,6 +30,10 @@ data class Note(
     @ColumnInfo(name = COLUMN_LASTUPDATED) var lastUpdated: Long
 
 ) : Parcelable {
+
+    @Ignore
+    var isSelected: Boolean = false
+
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "",
@@ -36,7 +41,9 @@ data class Note(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readLong()
-    )
+    ) {
+        isSelected = parcel.readByte() != 0.toByte()
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
@@ -45,6 +52,7 @@ data class Note(
         parcel.writeInt(color)
         parcel.writeInt(font)
         parcel.writeLong(lastUpdated)
+        parcel.writeByte(if (isSelected) 1 else 0)
     }
 
     override fun describeContents(): Int {

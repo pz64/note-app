@@ -2,28 +2,27 @@ package pzy64.xnotes.ui.screens.create
 
 import android.animation.Animator
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
-import android.view.View.NOT_FOCUSABLE
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.create_note_fragment.*
-import org.jetbrains.anko.toast
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
 import pzy64.xnotes.databinding.CreateNoteFragmentBinding
-import pzy64.xnotes.delayed
+import pzy64.xnotes.hideKeyboard
+import pzy64.xnotes.showKeyboard
 import pzy64.xnotes.ui.Colors
 import pzy64.xnotes.ui.Fonts
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment
 import pzy64.xnotes.ui.screens.Pz64ViewModel
 import kotlin.math.hypot
+
 
 class CreateNoteFragment : Pz64Fragment() {
 
@@ -45,7 +44,6 @@ class CreateNoteFragment : Pz64Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
     }
 
     override fun onCreateView(
@@ -77,10 +75,8 @@ class CreateNoteFragment : Pz64Fragment() {
                 titleEdittext.isFocusableInTouchMode = true
                 titleEdittext.requestFocus()
 
-                delayed(750) {
-                    val imm =
-                        context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.showSoftInput(titleEdittext, InputMethodManager.SHOW_IMPLICIT)
+                delayed(350) {
+                    context?.showKeyboard(titleEdittext)
                 }
 
             } else {
@@ -165,10 +161,22 @@ class CreateNoteFragment : Pz64Fragment() {
                 viewModel.currentColorIndex.value = (index + 1) % size
             }
             R.id.actionShareNote -> {
-                context?.toast("share")
+                val sharingIntent = Intent(Intent.ACTION_SEND)
+                sharingIntent.type = "text/plain"
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, viewModel.currentNote.value?.title)
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, viewModel.currentNote.value?.content)
+                startActivity(
+                    Intent.createChooser(
+                        sharingIntent,"Share via"
+                    )
+                )
             }
         }
         return false
     }
 
+    override fun onPause() {
+        super.onPause()
+        context?.hideKeyboard(titleEdittext)
+    }
 }

@@ -13,6 +13,7 @@
     </data>
 
     <FrameLayout
+        android:foreground="?android:attr/selectableItemBackground"
         android:id="@+id/containerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +27,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/title"
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,20 +35,21 @@
                 android:padding="8dp"
                 android:text="@{note.title}"
                 android:visibility="@{note.title.isEmpty() ? View.GONE : View.VISIBLE}"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:boldFont="@{note.font}"
                 tools:text="Title" />
 
             <TextView
+                android:id="@+id/content"
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:focusable="true"
                 android:padding="8dp"
-                android:text="@{BindingHelpers.ellipsize(note.content, 512)}"
+                android:text="@{BindingHelpers.ellipsize(note.content, 256)}"
                 android:visibility="@{note.content.isEmpty() ? View.GONE : View.VISIBLE}"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 app:regularFont="@{note.font}"
                 tools:text="Content" />
         </LinearLayout>

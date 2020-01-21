@@ -36,4 +36,8 @@ class Repo private constructor(private val appDb: AppDb) {
         appDb.userDao().getNotes()
     }
 
+    suspend fun deleteNotes(vararg note: Note) {
+        appDb.userDao().delete(*note)
+    }
+
 }

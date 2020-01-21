@@ -12,6 +12,10 @@ object Colors {
     fun blendInWhite(index: Int, alpha: Int) =
         ColorUtils.blendARGB(bg(index, alpha), 0xFFFFFF, 0.5f)
 
+    fun isDark(index: Int,  alpha: Int): Boolean {
+        return ColorUtils.calculateLuminance(bg(index, alpha)) < 0.5
+    }
+
     private val COLORS = arrayOf(
         0xFFFAFAFA.toInt(),
         0xFF9E9E9E.toInt(),

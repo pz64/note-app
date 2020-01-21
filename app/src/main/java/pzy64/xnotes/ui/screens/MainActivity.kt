@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.launch
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
-import pzy64.xnotes.delayed
 import pzy64.xnotes.ui.baseclasses.Pz64Activity
 import pzy64.xnotes.ui.screens.main.MainFragmentDirections
 

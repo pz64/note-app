@@ -2,6 +2,7 @@ package pzy64.xnotes.ui.baseclasses
 
 import android.app.AppComponentFactory
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
@@ -25,5 +26,9 @@ abstract class Pz64Activity : AppCompatActivity(), CoroutineScope {
         job.cancel()
     }
 
-
+    fun delayed(delay: Long = 300, block: () -> Unit) {
+        Handler().postDelayed({
+                block()
+        }, delay)
+    }
 }
