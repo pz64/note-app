@@ -8,16 +8,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
+import org.jetbrains.anko.collections.forEachByIndex
 import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.databinding.RowNoteBinding
 import pzy64.xnotes.scaleOutAnim
 import pzy64.xnotes.ui.Colors
 
 class NotesAdapter(
-    val data: MutableList<Note>,
-    private val onClick: (Note) -> Unit
+    private val onClick: (Note) -> Unit,
+    private val selectedCallback: (selected: Boolean) -> Unit
 ) :
     RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+
+    var data: MutableList<Note> = mutableListOf()
+
+    fun deleteSelectedNotes() {
+
+        data.forEachIndexed { index, note ->
+            if (!note.isSelected) {
+                notifyItemRemoved(index)
+            }
+        }
+
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -43,7 +57,21 @@ class NotesAdapter(
 
             itemBinding.containerLayout.setOnLongClickListener {
                 note.isSelected = !note.isSelected
+
                 setCardColor(note, itemBinding)
+
+                if (note.isSelected)
+                    selectedCallback(true)
+                else {
+                    var selected = false
+                    for (i in data) {
+                        if (i.isSelected) {
+                            selected = true
+                            break
+                        }
+                    }
+                    selectedCallback(selected)
+                }
 
                 true
             }

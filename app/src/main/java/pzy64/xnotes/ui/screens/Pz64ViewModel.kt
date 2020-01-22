@@ -34,6 +34,10 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
 
     val editMode = MutableLiveData<Boolean>(false)
 
+    var notes = mutableListOf<Note>()
+
+    val menuType = MutableLiveData(MenuType.TypeNone)
+
     init {
 
         currentNote.observeForever {
@@ -90,7 +94,9 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
 
     fun getNotes(): LiveData<List<Note>> =
         liveData {
-            emit(repo.getNotes())
+            val notes = repo.getNotes()
+            this@Pz64ViewModel.notes = notes.toMutableList()
+            emit(notes)
         }
 
     suspend fun deleteNote(vararg note: Note) {

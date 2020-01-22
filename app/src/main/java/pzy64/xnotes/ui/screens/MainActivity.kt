@@ -2,9 +2,8 @@ package pzy64.xnotes.ui.screens
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import androidx.core.content.ContextCompat
-import androidx.core.view.isEmpty
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -12,6 +11,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.toast
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
 import pzy64.xnotes.ui.baseclasses.Pz64Activity
@@ -44,6 +44,29 @@ class MainActivity : Pz64Activity() {
     }
 
     private fun setupUi() {
+
+        viewModel.menuType.observe(this, Observer {
+            it?.let {
+                bottomAppBar.menu.clear()
+                when (it) {
+                    MenuType.TypeNone -> {
+
+                    }
+                    MenuType.TypeCreate -> {
+                        menuInflater.inflate(
+                            R.menu.create_edit_note_menu,
+                            bottomAppBar.menu
+                        )
+                    }
+                    MenuType.TypeDelete -> {
+                        menuInflater.inflate(
+                            R.menu.delete_note_menu,
+                            bottomAppBar.menu
+                        )
+                    }
+                }
+            }
+        })
 
         viewModel.currentDestination.observe(this, Observer {
             it?.let {
@@ -114,11 +137,7 @@ class MainActivity : Pz64Activity() {
                                 FloatingActionButton.OnVisibilityChangedListener() {
                                 override fun onShown(fab: FloatingActionButton?) {
                                     super.onShown(fab)
-                                    if (bottomAppBar.menu.isEmpty())
-                                        menuInflater.inflate(
-                                            R.menu.create_edit_note_menu,
-                                            bottomAppBar.menu
-                                        )
+                                    viewModel.menuType.value = MenuType.TypeCreate
                                 }
                             })
                         }
@@ -150,9 +169,7 @@ class MainActivity : Pz64Activity() {
                     if (viewModel.editMode.value == true) {
                         viewModel.editMode.value = false
                     } else {
-                        launch {
-                            viewModel.saveNote()
-                        }
+                        launch { viewModel.saveNote() }
                     }
                 }
             }
@@ -165,22 +182,7 @@ class MainActivity : Pz64Activity() {
     }
 
     private fun navigateBacktOMainScreen() {
-        bottomAppBar.menu.clear()
-
-        faButton.hide()
-
-        delayed {
-            faButton.setImageResource(R.drawable.ic_add_note)
-            faButton.imageTintList = null
-            faButton.backgroundTintList =
-                ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.grey_50
-                    )
-                )
-            faButton.show()
-        }
+        viewModel.menuType.value = MenuType.TypeNone
         navController.popBackStack()
     }
 

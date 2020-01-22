@@ -163,8 +163,8 @@ class CreateNoteFragment : Pz64Fragment() {
             R.id.actionShareNote -> {
                 val sharingIntent = Intent(Intent.ACTION_SEND)
                 sharingIntent.type = "text/plain"
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, viewModel.currentNote.value?.title)
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, viewModel.currentNote.value?.content)
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, titleEdittext.text)
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, contentsEdittext.text)
                 startActivity(
                     Intent.createChooser(
                         sharingIntent,"Share via"

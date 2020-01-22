@@ -18,12 +18,20 @@ fun Fragment.toast(msg: String) = context?.toast(msg)
 
 fun View.scaleOutAnim(delay: Long = 500): AnimatorSet {
 
+    val scalex = ObjectAnimator.ofFloat(this, "scaleX", 0.99f, 1f)
+    scalex.duration = delay
+    scalex.interpolator = DecelerateInterpolator(1f)
+
+    val scaley = ObjectAnimator.ofFloat(this, "scaleY", 0.99f, 1f)
+    scaley.duration = delay
+    scaley.interpolator = DecelerateInterpolator(1f)
+
     val alpha = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f)
     alpha.duration = delay
     alpha.interpolator = DecelerateInterpolator(1f)
 
     val set = AnimatorSet()
-    set.playTogether(alpha)
+    set.playTogether(alpha, scalex, scaley)
     set.start()
 
     return set
