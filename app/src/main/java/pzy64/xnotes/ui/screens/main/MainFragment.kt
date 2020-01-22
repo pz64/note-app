@@ -118,6 +118,7 @@ class MainFragment : Pz64Fragment() {
         when(item.itemId) {
             R.id.actionDelete -> {
                noteAdapter.deleteSelectedNotes()
+                viewModel.menuType.value = MenuType.TypeNone
             }
         }
 

@@ -1,6 +1,7 @@
 package pzy64.xnotes.ui.screens.main
 
 import android.content.res.ColorStateList
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
@@ -8,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import org.jetbrains.anko.collections.forEachByIndex
 import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.databinding.RowNoteBinding
 import pzy64.xnotes.scaleOutAnim
@@ -24,13 +24,15 @@ class NotesAdapter(
 
     fun deleteSelectedNotes() {
 
-        data.forEachIndexed { index, note ->
-            if (!note.isSelected) {
-                notifyItemRemoved(index)
+        var i = data.listIterator()
+
+        while (i.hasNext()) {
+            val note = i.next()
+            if (note.isSelected) {
+                i.remove()
+                notifyItemRemoved(i.nextIndex())
             }
         }
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
