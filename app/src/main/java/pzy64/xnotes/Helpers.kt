@@ -5,6 +5,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.view.ContextMenu
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -79,4 +80,8 @@ fun Context.showKeyboard(view:View){
     val imm: InputMethodManager =
         this.getSystemService(android.app.Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+}
+
+fun onDarkMode(block: () -> Unit)   {
+
 }

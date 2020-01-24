@@ -230,6 +230,8 @@ class MainActivity : Pz64Activity() {
         }
     }
 
+
+
     private fun navigateToCreateNote() {
         val destination = MainFragmentDirections.createNote()
         navController.navigate(destination)

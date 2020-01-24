@@ -28,8 +28,6 @@
             android:layout_height="56dp"
             android:text="Trash"
             android:textAlignment="textStart"
-            android:textColor="@color/black"
-            app:backgroundTint="@color/grey_100"
             app:cornerRadius="12dp"
             app:elevation="0dp"
             app:icon="@drawable/ic_delete"
@@ -42,8 +40,6 @@
             android:layout_height="56dp"
             android:text="Settings"
             android:textAlignment="textStart"
-            android:textColor="@color/black"
-            app:backgroundTint="@color/grey_100"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_settings"
             app:iconTint="@color/black" />
@@ -55,8 +51,6 @@
             android:layout_height="56dp"
             android:text="About"
             android:textAlignment="textStart"
-            android:textColor="@color/black"
-            app:backgroundTint="@color/grey_100"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_about"
             app:iconTint="@color/black" />

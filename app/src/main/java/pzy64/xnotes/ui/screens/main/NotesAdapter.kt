@@ -1,7 +1,6 @@
 package pzy64.xnotes.ui.screens.main
 
 import android.content.res.ColorStateList
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
@@ -35,8 +34,8 @@ class NotesAdapter(
         }
     }
 
-    fun deSelectAll()   {
-        for ( i in data)
+    fun deSelectAll() {
+        for (i in data)
             i.isSelected = false
 
         notifyDataSetChanged()
@@ -111,19 +110,20 @@ class NotesAdapter(
             if (Colors.isDark(note.color, alpha)) {
                 binding.title.setTextColor(0xffffffff.toInt())
                 binding.content.setTextColor(0xffffffff.toInt())
-            } else {
+            }
+            else {
                 binding.title.setTextColor(0xff000000.toInt())
                 binding.content.setTextColor(0xff000000.toInt())
             }
 
         } else {
-            val alpha = 0x1A
+            val alpha = 0x2A
             shapeDrawable.setStroke(2f, ColorStateList.valueOf(strokeColor))
             shapeDrawable.fillColor = ColorStateList.valueOf(Colors.bg(note.color, alpha))
             ViewCompat.setBackground(binding.containerLayout, shapeDrawable)
 
-            binding.title.setTextColor(0xff000000.toInt())
-            binding.content.setTextColor(0xff000000.toInt())
+//            binding.title.setTextColor(0xff000000.toInt())
+//            binding.content.setTextColor(0xff000000.toInt())
         }
     }
 }
