@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Nightmode">
+        <item>Night Theme</item>
+        <item>Light Theme</item>
+        <item>Follow System</item>
+    </string-array>
+    <array name="NightmodeValue">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </array>
+</resources>

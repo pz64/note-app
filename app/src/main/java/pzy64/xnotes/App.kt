@@ -9,8 +9,8 @@ class App : Application() {
         super.onCreate()
 
         val x =
-//            false
-            true
+            false
+//            true
 
 
         if (x) {

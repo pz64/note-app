@@ -11,14 +11,7 @@ import pzy64.xnotes.ui.screens.Pz64ViewModel
 class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-
-
+        setPreferencesFromResource(R.xml.preference, rootKey)
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
 
 }
