@@ -10,15 +10,14 @@ class App : Application() {
 
         val x =
             false
-//        true
+//            true
 
 
-        if(x) {
+        if (x) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }else {
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-
 
     }
 

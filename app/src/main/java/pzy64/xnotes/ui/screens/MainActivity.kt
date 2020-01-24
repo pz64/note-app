@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -33,7 +33,8 @@ class MainActivity : Pz64Activity() {
         setSupportActionBar(bottomAppBar)
 
         val factory = Injetor.provideVMFactory(applicationContext)
-        viewModel = ViewModelProviders.of(this, factory).get(Pz64ViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory)[Pz64ViewModel::class.java]
+
 
         navController = Navigation.findNavController(
             this,
@@ -51,6 +52,19 @@ class MainActivity : Pz64Activity() {
 
         menuBehavior = BottomSheetBehavior.from(menuSheet)
         menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        settingsButton.setOnClickListener {
+            when (viewModel.currentDestination.value) {
+                R.id.destinationTrash -> {
+                    val destination = TrashFragmentDirections.openSettings()
+                    navController.navigate(destination)
+                }
+                R.id.destinationMainFragment -> {
+                    val destination = MainFragmentDirections.openSettings()
+                    navController.navigate(destination)
+                }
+            }
+        }
 
         homeOrtrashButton.setOnClickListener {
 
@@ -246,6 +260,9 @@ class MainActivity : Pz64Activity() {
     override fun onBackPressed() {
         when (viewModel.currentDestination.value) {
             R.id.destinationCreateNote -> {
+                navController.popBackStack()
+            }
+            R.id.destinationSettings -> {
                 navController.popBackStack()
             }
             R.id.destinationTrash -> {

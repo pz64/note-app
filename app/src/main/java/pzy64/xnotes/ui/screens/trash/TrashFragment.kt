@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -31,10 +32,6 @@ class TrashFragment : Pz64Fragment() {
         fun newInstance() = TrashFragment()
     }
 
-    private lateinit var viewModel: Pz64ViewModel
-
-    private lateinit var factory: Pz64ViewModel.Factory
-
     private val placeHolderLoading = "LOADING.."
     private val placeholderEmpty = "TRASH\nEMPTY"
     private lateinit var noteAdapter: NotesAdapter
@@ -54,10 +51,6 @@ class TrashFragment : Pz64Fragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        factory = Injetor.provideVMFactory(context.applicationContext)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,11 +66,7 @@ class TrashFragment : Pz64Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.apply {
-            viewModel = ViewModelProviders.of(this, factory).get(Pz64ViewModel::class.java)
-
             setupUi()
-        }
     }
 
     private fun setupUi() {

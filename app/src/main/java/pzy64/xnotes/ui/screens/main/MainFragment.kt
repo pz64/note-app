@@ -30,10 +30,6 @@ class MainFragment : Pz64Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: Pz64ViewModel
-
-    private lateinit var factory: Pz64ViewModel.Factory
-
     private val placeHolderLoading = "LOADING.."
     private val placeholderAddNote = "ADD\nNOTE"
 
@@ -54,11 +50,6 @@ class MainFragment : Pz64Fragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        factory = Injetor.provideVMFactory(context.applicationContext)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -73,11 +64,7 @@ class MainFragment : Pz64Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.apply {
-            viewModel = ViewModelProviders.of(this, factory).get(Pz64ViewModel::class.java)
-
             setupUi()
-        }
     }
 
     private fun setupUi() {

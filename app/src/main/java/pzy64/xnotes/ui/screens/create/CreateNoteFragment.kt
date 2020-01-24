@@ -10,11 +10,13 @@ import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.create_note_fragment.*
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
 import pzy64.xnotes.databinding.CreateNoteFragmentBinding
+import pzy64.xnotes.databinding.CreateNoteFragmentBindingImpl
 import pzy64.xnotes.hideKeyboard
 import pzy64.xnotes.showKeyboard
 import pzy64.xnotes.ui.Colors
@@ -26,18 +28,13 @@ import kotlin.math.hypot
 
 class CreateNoteFragment : Pz64Fragment() {
 
-
-    private lateinit var viewModel: Pz64ViewModel
-    private lateinit var binding: CreateNoteFragmentBinding
-
     private lateinit var fonts: Fonts
-    private lateinit var factory: Pz64ViewModel.Factory
 
+    private lateinit var binding:CreateNoteFragmentBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fonts = Fonts(context)
-        factory = Injetor.provideVMFactory(context.applicationContext)
     }
 
 
@@ -57,13 +54,12 @@ class CreateNoteFragment : Pz64Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.apply {
-            viewModel = ViewModelProviders.of(this, factory).get(Pz64ViewModel::class.java)
+
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
 
             setupUi()
-        }
+
     }
 
 
