@@ -27,11 +27,12 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Trash"
+            android:textColor="@color/colorText"
             android:textAlignment="textStart"
             app:cornerRadius="12dp"
             app:elevation="0dp"
             app:icon="@drawable/ic_delete"
-            app:iconTint="@color/black" />
+            app:iconTint="@color/colorText" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settingsButton"
@@ -40,9 +41,10 @@
             android:layout_height="56dp"
             android:text="Settings"
             android:textAlignment="textStart"
+            android:textColor="@color/colorText"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_settings"
-            app:iconTint="@color/black" />
+            app:iconTint="@color/colorText" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/aboutButton"
@@ -50,10 +52,11 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="About"
+            android:textColor="@color/colorText"
             android:textAlignment="textStart"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_about"
-            app:iconTint="@color/black" />
+            app:iconTint="@color/colorText" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

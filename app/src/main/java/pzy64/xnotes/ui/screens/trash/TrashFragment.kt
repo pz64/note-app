@@ -112,18 +112,18 @@ class TrashFragment : Pz64Fragment() {
         when (item.itemId) {
             R.id.actionDeleteForever -> {
                 if (attached) {
-                    AlertDialog.Builder(context!!)
+                    AlertDialog.Builder(context!!, R.style.dialogButtonColor)
                         .setTitle("Confirm Deletion")
                         .setMessage("Deleted note can't be retrieved later.")
                         .setPositiveButton(android.R.string.ok) { dialog, which ->
-
+                            noteAdapter.deleteSelectedNotes()
                             launch {
                                 val notes = viewModel.notes.filter {
                                     it.isSelected
                                 }
                                 viewModel.deleteNote(notes)
                                 viewModel.menuType.value = MenuType.TypeNone
-                                noteAdapter.deleteSelectedNotes()
+
                                 if (viewModel.notes.isEmpty()) {
                                     placeHolder.text = placeholderEmpty
                                     placeHolder.show()

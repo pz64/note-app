@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/bg_grid"
+    android:src="@drawable/bg_grid_xl"
     android:tileMode="repeat"
     android:tint="@color/red_100"
-    android:tintMode="src_atop"
-    android:alpha="1"/>
+    android:tintMode="multiply"
+    android:alpha="0.15"/>

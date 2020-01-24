@@ -4,9 +4,6 @@
     <color name="colorPrimaryDark">#fafafa</color>
     <color name="colorPrimaryDark23">#aaaaaa</color>
     <color name="colorAccent">#FFAB00</color>
+    <color name="colorText">#2d2d2d</color>
 
-    <color name="colorPrimaryNight">#212121</color>
-    <color name="colorPrimaryDarkNight">#212121</color>
-    <color name="colorPrimaryDark23Night">#212121</color>
-    <color name="colorAccentNight">#FFAB00</color>
 </resources>

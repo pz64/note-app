@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="dialogButtonColor" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+
+        <item name="android:colorAccent">@color/colorText</item>
+        <item name="android:colorPrimary">@color/colorText</item>
+
+    </style>
+
 </resources>

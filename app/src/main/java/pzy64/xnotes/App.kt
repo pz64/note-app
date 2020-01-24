@@ -8,7 +8,18 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        val x =
+            false
+//        true
+
+
+        if(x) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
+
     }
 
 

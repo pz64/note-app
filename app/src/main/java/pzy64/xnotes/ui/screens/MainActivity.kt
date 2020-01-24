@@ -57,13 +57,13 @@ class MainActivity : Pz64Activity() {
             menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
 
-            when(viewModel.currentDestination.value) {
+            when (viewModel.currentDestination.value) {
                 R.id.destinationTrash -> {
-                    val destination =   TrashFragmentDirections.openHome()
+                    val destination = TrashFragmentDirections.openHome()
                     navController.navigate(destination)
                 }
                 R.id.destinationMainFragment -> {
-                   val destination =  MainFragmentDirections.openTrash()
+                    val destination = MainFragmentDirections.openTrash()
                     navController.navigate(destination)
                 }
             }
@@ -149,7 +149,7 @@ class MainActivity : Pz64Activity() {
                                 ColorStateList.valueOf(
                                     ContextCompat.getColor(
                                         this,
-                                        R.color.grey_50
+                                        R.color.colorPrimary
                                     )
                                 )
                             faButton.show()
@@ -194,7 +194,9 @@ class MainActivity : Pz64Activity() {
                         }
                     }
                     FABState.Hidden -> {
-                        faButton.hide()
+                        delayed {
+                            faButton.hide()
+                        }
                     }
                 }
             }
@@ -229,7 +231,6 @@ class MainActivity : Pz64Activity() {
             }
         }
     }
-
 
 
     private fun navigateToCreateNote() {

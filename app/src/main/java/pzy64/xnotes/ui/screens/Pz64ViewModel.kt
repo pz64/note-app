@@ -119,13 +119,15 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
 
     suspend fun restoreFromTrash(note: List<Note>) {
         for (i in note) {
-            notes.add(i)
-            i.deleted = NOTE_ACTIVE
+            i.deleted  = NOTE_ACTIVE
+            notes.remove(i)
         }
         repo.updateNote(*note.toTypedArray())
     }
 
-    suspend fun deleteNote( note: List<Note>) {
+    suspend fun deleteNote(note: List<Note>) {
+        for (i in note)
+            notes.remove(i)
         repo.deleteNotes(*note.toTypedArray())
     }
 }

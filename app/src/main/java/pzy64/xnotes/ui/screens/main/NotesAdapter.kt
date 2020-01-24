@@ -10,6 +10,8 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.databinding.RowNoteBinding
+import pzy64.xnotes.onDarkMode
+import pzy64.xnotes.onLightMode
 import pzy64.xnotes.scaleOutAnim
 import pzy64.xnotes.ui.Colors
 
@@ -110,20 +112,25 @@ class NotesAdapter(
             if (Colors.isDark(note.color, alpha)) {
                 binding.title.setTextColor(0xffffffff.toInt())
                 binding.content.setTextColor(0xffffffff.toInt())
-            }
-            else {
+            } else {
                 binding.title.setTextColor(0xff000000.toInt())
                 binding.content.setTextColor(0xff000000.toInt())
             }
 
         } else {
-            val alpha = 0x2A
+            val alpha = 0x2b
             shapeDrawable.setStroke(2f, ColorStateList.valueOf(strokeColor))
             shapeDrawable.fillColor = ColorStateList.valueOf(Colors.bg(note.color, alpha))
             ViewCompat.setBackground(binding.containerLayout, shapeDrawable)
 
-//            binding.title.setTextColor(0xff000000.toInt())
-//            binding.content.setTextColor(0xff000000.toInt())
+            binding.root.context.onLightMode {
+                binding.title.setTextColor(0xff000000.toInt())
+                binding.content.setTextColor(0xff000000.toInt())
+            }
+            binding.root.context.onDarkMode {
+                binding.title.setTextColor(0xffffffff.toInt())
+                binding.content.setTextColor(0xffffffff.toInt())
+            }
         }
     }
 }

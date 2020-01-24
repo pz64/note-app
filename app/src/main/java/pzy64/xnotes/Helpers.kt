@@ -3,14 +3,13 @@ package pzy64.xnotes
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
-import android.view.ContextMenu
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import org.jetbrains.anko.configuration
 import org.jetbrains.anko.toast
 
 
@@ -70,18 +69,28 @@ fun View.hide(delay: Long = 500) {
     })
 }
 
-fun Context.hideKeyboard(view:View){
+fun Context.hideKeyboard(view: View) {
     val imm: InputMethodManager =
         this.getSystemService(android.app.Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun Context.showKeyboard(view:View){
+fun Context.showKeyboard(view: View) {
     val imm: InputMethodManager =
         this.getSystemService(android.app.Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
 }
 
-fun onDarkMode(block: () -> Unit)   {
+fun Context.onDarkMode(block: () -> Unit) {
+    val currentNightMode = configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+        block()
+    }
+}
 
+fun Context.onLightMode(block: () -> Unit) {
+    val currentNightMode = configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    if (currentNightMode == Configuration.UI_MODE_NIGHT_NO) {
+        block()
+    }
 }

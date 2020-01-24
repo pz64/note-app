@@ -31,7 +31,7 @@
             <com.google.android.material.circularreveal.cardview.CircularRevealCardView
                 android:id="@+id/colorRevealingLayout"
                 android:layout_width="match_parent"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/colorPrimary"
                 android:layout_height="match_parent"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
