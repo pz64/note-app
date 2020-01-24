@@ -56,7 +56,7 @@
             android:id="@+id/openSettings"
             app:destination="@id/destinationSettings"
             app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
             app:launchSingleTop="false"
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_open_exit" />
@@ -64,5 +64,5 @@
     <fragment
         android:id="@+id/destinationSettings"
         android:name="pzy64.xnotes.ui.screens.settings.SettingsFragment"
-        android:label="Settings" />
+        android:label="settings" />
 </navigation>

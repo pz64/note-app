@@ -45,15 +45,17 @@ class MainActivity : Pz64Activity() {
             viewModel.currentDestination.value = destination.id
         }
         setupUi()
-
     }
 
     private fun setupUi() {
+
+        bottomAppBar.hideOnScroll = true
 
         menuBehavior = BottomSheetBehavior.from(menuSheet)
         menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         settingsButton.setOnClickListener {
+
             when (viewModel.currentDestination.value) {
                 R.id.destinationTrash -> {
                     val destination = TrashFragmentDirections.openSettings()
@@ -70,7 +72,6 @@ class MainActivity : Pz64Activity() {
 
             menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-
             when (viewModel.currentDestination.value) {
                 R.id.destinationTrash -> {
                     val destination = TrashFragmentDirections.openHome()
@@ -84,7 +85,15 @@ class MainActivity : Pz64Activity() {
         }
 
         bottomAppBar.setNavigationOnClickListener {
-            menuBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+
+            when (viewModel.currentDestination.value) {
+                R.id.destinationSettings -> {
+                    navController.popBackStack()
+                }
+                else -> {
+                    menuBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                }
+            }
         }
 
         hideMenuSheet.setOnClickListener {
@@ -92,38 +101,37 @@ class MainActivity : Pz64Activity() {
         }
 
         viewModel.menuType.observe(this, Observer {
+            bottomAppBar.performShow()
             it?.let {
+
                 bottomAppBar.menu.clear()
+
                 when (it) {
                     MenuType.TypeNone -> {
 
                     }
                     MenuType.TypeCreate -> {
-                        menuInflater.inflate(
-                            R.menu.create_edit_note_menu,
-                            bottomAppBar.menu
-                        )
+                        bottomAppBar.replaceMenu(R.menu.create_edit_note_menu)
+
                     }
                     MenuType.TypeDelete -> {
-                        menuInflater.inflate(
-                            R.menu.delete_note_menu,
-                            bottomAppBar.menu
-                        )
+                        bottomAppBar.replaceMenu(R.menu.delete_note_menu)
+
                     }
                     MenuType.TypeDeletePermanent -> {
-                        menuInflater.inflate(
-                            R.menu.remove_restore_menu,
-                            bottomAppBar.menu
-                        )
+                        bottomAppBar.replaceMenu(R.menu.remove_restore_menu)
+
                     }
                 }
             }
         })
 
         viewModel.currentDestination.observe(this, Observer {
+            bottomAppBar.performShow()
             it?.let {
                 when (it) {
                     R.id.destinationMainFragment -> {
+
                         homeOrtrashButton.text = "Trash"
                         homeOrtrashButton.setIconResource(R.drawable.ic_delete)
                         bottomAppBar.setNavigationIcon(R.drawable.ic_menu)
@@ -131,6 +139,7 @@ class MainActivity : Pz64Activity() {
                         viewModel.currentFABState.value = FABState.CreateNote
                     }
                     R.id.destinationTrash -> {
+
                         homeOrtrashButton.text = "Home"
                         homeOrtrashButton.setIconResource(R.drawable.ic_home)
                         bottomAppBar.setNavigationIcon(R.drawable.ic_menu)
@@ -138,6 +147,7 @@ class MainActivity : Pz64Activity() {
                         viewModel.currentFABState.value = FABState.Hidden
                     }
                     R.id.destinationCreateNote -> {
+
                         menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                         bottomAppBar.navigationIcon = null
                         viewModel.editMode.observe(this, Observer {
@@ -145,6 +155,11 @@ class MainActivity : Pz64Activity() {
                                 viewModel.currentFABState.value = FABState.EditNote
                             else viewModel.currentFABState.value = FABState.SaveNote
                         })
+                    }
+                    R.id.destinationSettings -> {
+                        viewModel.currentFABState.value = FABState.Hidden
+                        menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                        bottomAppBar.setNavigationIcon(R.drawable.ic_arrow_back)
                     }
                 }
             }
