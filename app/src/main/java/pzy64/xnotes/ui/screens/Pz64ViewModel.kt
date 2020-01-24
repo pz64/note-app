@@ -2,6 +2,8 @@ package pzy64.xnotes.ui.screens
 
 import androidx.lifecycle.*
 import pzy64.xnotes.data.Repo
+import pzy64.xnotes.data.model.NOTE_ACTIVE
+import pzy64.xnotes.data.model.NOTE_DELETED
 import pzy64.xnotes.data.model.Note
 
 class Pz64ViewModel(private val repo: Repo) : ViewModel() {
@@ -37,6 +39,7 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
     var notes = mutableListOf<Note>()
 
     val menuType = MutableLiveData(MenuType.TypeNone)
+
 
     init {
 
@@ -99,7 +102,30 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
             emit(notes)
         }
 
-    suspend fun deleteNote(vararg note: Note) {
-        repo.deleteNotes(*note)
+    fun getTrash(): LiveData<List<Note>> =
+        liveData {
+            val notes = repo.getTrash()
+            this@Pz64ViewModel.notes = notes.toMutableList()
+            emit(notes)
+        }
+
+    suspend fun moveToTrash(note: List<Note>) {
+        for (i in note) {
+            notes.remove(i)
+            i.deleted = NOTE_DELETED
+        }
+        repo.updateNote(*note.toTypedArray())
+    }
+
+    suspend fun restoreFromTrash(note: List<Note>) {
+        for (i in note) {
+            notes.add(i)
+            i.deleted = NOTE_ACTIVE
+        }
+        repo.updateNote(*note.toTypedArray())
+    }
+
+    suspend fun deleteNote( note: List<Note>) {
+        repo.deleteNotes(*note.toTypedArray())
     }
 }

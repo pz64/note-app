@@ -1,6 +1,5 @@
 package pzy64.xnotes.data
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pzy64.xnotes.data.model.Note
@@ -25,9 +24,9 @@ class Repo private constructor(private val appDb: AppDb) {
         }
     }
 
-    suspend fun updateNote(note: Note) {
+    suspend fun updateNote(vararg note: Note) {
         withContext(Dispatchers.IO) {
-            appDb.userDao().update(note)
+            appDb.userDao().update(*note)
         }
     }
 
@@ -36,8 +35,12 @@ class Repo private constructor(private val appDb: AppDb) {
         appDb.userDao().getNotes()
     }
 
+    suspend fun getTrash(): List<Note> = withContext(Dispatchers.IO) {
+        appDb.userDao().getTrash()
+    }
+
     suspend fun deleteNotes(vararg note: Note) {
-        appDb.userDao().delete(*note)
+        appDb.userDao().remove(*note)
     }
 
 }

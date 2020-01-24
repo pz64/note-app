@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/actionDeleteForever"
+        android:icon="@drawable/ic_delete_forever"
+        android:title="Remove for ever"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionRestore"
+        android:icon="@drawable/ic_restore_note"
+        android:title="Restore Note"
+        app:showAsAction="ifRoom" />
+</menu>

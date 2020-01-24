@@ -2,26 +2,30 @@ package pzy64.xnotes.ui.screens
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.MenuItem
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.android.synthetic.main.menu_sheet.*
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.toast
 import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
 import pzy64.xnotes.ui.baseclasses.Pz64Activity
 import pzy64.xnotes.ui.screens.main.MainFragmentDirections
+import pzy64.xnotes.ui.screens.trash.TrashFragmentDirections
 
 
 class MainActivity : Pz64Activity() {
 
     private lateinit var navController: NavController
     private lateinit var viewModel: Pz64ViewModel
+    private lateinit var menuBehavior: BottomSheetBehavior<View>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +49,34 @@ class MainActivity : Pz64Activity() {
 
     private fun setupUi() {
 
+        menuBehavior = BottomSheetBehavior.from(menuSheet)
+        menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        homeOrtrashButton.setOnClickListener {
+
+            menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+
+            when(viewModel.currentDestination.value) {
+                R.id.destinationTrash -> {
+                    val destination =   TrashFragmentDirections.openHome()
+                    navController.navigate(destination)
+                }
+                R.id.destinationMainFragment -> {
+                   val destination =  MainFragmentDirections.openTrash()
+                    navController.navigate(destination)
+                }
+            }
+        }
+
+        bottomAppBar.setNavigationOnClickListener {
+            menuBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
+
+        hideMenuSheet.setOnClickListener {
+            menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
         viewModel.menuType.observe(this, Observer {
             it?.let {
                 bottomAppBar.menu.clear()
@@ -64,6 +96,12 @@ class MainActivity : Pz64Activity() {
                             bottomAppBar.menu
                         )
                     }
+                    MenuType.TypeDeletePermanent -> {
+                        menuInflater.inflate(
+                            R.menu.remove_restore_menu,
+                            bottomAppBar.menu
+                        )
+                    }
                 }
             }
         })
@@ -72,9 +110,22 @@ class MainActivity : Pz64Activity() {
             it?.let {
                 when (it) {
                     R.id.destinationMainFragment -> {
+                        homeOrtrashButton.text = "Trash"
+                        homeOrtrashButton.setIconResource(R.drawable.ic_delete)
+                        bottomAppBar.setNavigationIcon(R.drawable.ic_menu)
+
                         viewModel.currentFABState.value = FABState.CreateNote
                     }
+                    R.id.destinationTrash -> {
+                        homeOrtrashButton.text = "Home"
+                        homeOrtrashButton.setIconResource(R.drawable.ic_home)
+                        bottomAppBar.setNavigationIcon(R.drawable.ic_menu)
+
+                        viewModel.currentFABState.value = FABState.Hidden
+                    }
                     R.id.destinationCreateNote -> {
+                        menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                        bottomAppBar.navigationIcon = null
                         viewModel.editMode.observe(this, Observer {
                             if (viewModel.editMode.value == true)
                                 viewModel.currentFABState.value = FABState.EditNote
@@ -142,6 +193,9 @@ class MainActivity : Pz64Activity() {
                             })
                         }
                     }
+                    FABState.Hidden -> {
+                        faButton.hide()
+                    }
                 }
             }
         })
@@ -190,6 +244,9 @@ class MainActivity : Pz64Activity() {
         when (viewModel.currentDestination.value) {
             R.id.destinationCreateNote -> {
                 navController.popBackStack()
+            }
+            R.id.destinationTrash -> {
+                super.onBackPressed()
             }
             R.id.destinationMainFragment -> {
                 super.onBackPressed()

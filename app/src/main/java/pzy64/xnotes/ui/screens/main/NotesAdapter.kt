@@ -35,6 +35,13 @@ class NotesAdapter(
         }
     }
 
+    fun deSelectAll()   {
+        for ( i in data)
+            i.isSelected = false
+
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = RowNoteBinding.inflate(inflater, parent, false)
@@ -96,11 +103,7 @@ class NotesAdapter(
 
             val alpha = 0xff
 
-            val color = if (Colors.bg(note.color, 0xff) == Colors.bg(
-                    0,
-                    0xff
-                )
-            ) 0xffbababa.toInt() else Colors.bg(note.color, alpha)
+            val color = Colors.bg(note.color, alpha)
 
             shapeDrawable.fillColor = ColorStateList.valueOf(color)
             ViewCompat.setBackground(binding.containerLayout, shapeDrawable)

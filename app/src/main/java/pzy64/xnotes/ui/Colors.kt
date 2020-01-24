@@ -17,7 +17,7 @@ object Colors {
     }
 
     private val COLORS = arrayOf(
-        0xFFFAFAFA.toInt(),
+        0xFFDADADA.toInt(),
         0xFF9E9E9E.toInt(),
         0xFFF44336.toInt(),
         0xFF673AB7.toInt(),

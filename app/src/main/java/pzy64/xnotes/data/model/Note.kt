@@ -14,6 +14,10 @@ const val COLUMN_CONTENT = "content"
 const val COLUMN_COLOR = "color"
 const val COLUMN_FONT = "font"
 const val COLUMN_LASTUPDATED = "last_updated"
+const val COLUMN_DELETED = "deleted"
+
+const val NOTE_DELETED = 1
+const val NOTE_ACTIVE = 0
 
 @Entity(tableName = TABLE_NAME)
 data class Note(
@@ -27,7 +31,9 @@ data class Note(
 
     @ColumnInfo(name = COLUMN_FONT) var font: Int = 0,
 
-    @ColumnInfo(name = COLUMN_LASTUPDATED) var lastUpdated: Long
+    @ColumnInfo(name = COLUMN_LASTUPDATED) var lastUpdated: Long,
+
+    @ColumnInfo(name = COLUMN_DELETED) var deleted: Int = NOTE_ACTIVE
 
 ) : Parcelable {
 
@@ -40,7 +46,8 @@ data class Note(
         parcel.readString() ?: "",
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readLong()
+        parcel.readLong(),
+        parcel.readInt()
     ) {
         isSelected = parcel.readByte() != 0.toByte()
     }
@@ -52,6 +59,7 @@ data class Note(
         parcel.writeInt(color)
         parcel.writeInt(font)
         parcel.writeLong(lastUpdated)
+        parcel.writeInt(deleted)
         parcel.writeByte(if (isSelected) 1 else 0)
     }
 
@@ -68,4 +76,6 @@ data class Note(
             return arrayOfNulls(size)
         }
     }
+
+
 }

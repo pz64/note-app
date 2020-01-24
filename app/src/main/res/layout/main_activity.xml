@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
+        app:navigationIcon="@drawable/ic_menu"
         app:fabAlignmentMode="end"
         app:fabCradleMargin="4dp"
         app:fabCradleRoundedCornerRadius="4dp" />
@@ -32,6 +33,8 @@
         android:src="@drawable/ic_add_note"
         app:backgroundTint="@color/grey_50"
         app:layout_anchor="@id/bottomAppBar" />
+
+    <include layout="@layout/menu_sheet"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
