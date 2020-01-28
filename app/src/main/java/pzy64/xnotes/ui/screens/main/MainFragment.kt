@@ -39,7 +39,6 @@ class MainFragment : Pz64Fragment() {
         viewModel.currentNote.value = note
         viewModel.editMode.value = true
         findNavController().navigate(R.id.destinationCreateNote)
-
     }
 
     private val selectedCallback: (Boolean) -> Unit = { selected ->

@@ -106,11 +106,9 @@ class MainActivity : Pz64Activity() {
             bottomAppBar.performShow()
             it?.let {
 
-                bottomAppBar.menu.clear()
-
                 when (it) {
                     MenuType.TypeNone -> {
-
+                        bottomAppBar.menu.clear()
                     }
                     MenuType.TypeCreate -> {
                         bottomAppBar.replaceMenu(R.menu.create_edit_note_menu)
