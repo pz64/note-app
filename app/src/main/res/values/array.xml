@@ -5,9 +5,9 @@
         <item>Light Theme</item>
         <item>Follow System</item>
     </string-array>
-    <array name="NightmodeValue">
+    <string-array name="NightmodeValues">
         <item>0</item>
         <item>1</item>
         <item>2</item>
-    </array>
+    </string-array>
 </resources>

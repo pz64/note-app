@@ -49,6 +49,8 @@ class MainActivity : Pz64Activity() {
 
     private fun setupUi() {
 
+        faButton.hide()
+
         bottomAppBar.hideOnScroll = true
 
         menuBehavior = BottomSheetBehavior.from(menuSheet)
@@ -288,4 +290,5 @@ class MainActivity : Pz64Activity() {
             }
         }
     }
+
 }

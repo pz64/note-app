@@ -8,7 +8,9 @@ import android.content.res.Configuration
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import org.jetbrains.anko.configuration
 import org.jetbrains.anko.toast
 
@@ -92,5 +94,27 @@ fun Context.onLightMode(block: () -> Unit) {
     val currentNightMode = configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     if (currentNightMode == Configuration.UI_MODE_NIGHT_NO) {
         block()
+    }
+}
+
+ fun Context.changeThemeFromPref() {
+    val preference = PreferenceManager.getDefaultSharedPreferences(this)
+    val themeValues = resources.getStringArray(R.array.NightmodeValues)
+    val theme = preference.getString(getString(R.string.pref_key_nightmode), themeValues[2])
+
+    when (theme) {
+        themeValues[0] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        themeValues[1] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        themeValues[2] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+    }
+}
+
+fun  Context.changeThemeFromValue(value: String) {
+
+    val themeValues = resources.getStringArray(R.array.NightmodeValues)
+    when (value) {
+        themeValues[0] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        themeValues[1] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        themeValues[2] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">X Notes</string>
+
+    <string name="pref_key_nightmode">nightmode</string>
 </resources>

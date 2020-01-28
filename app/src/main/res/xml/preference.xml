@@ -5,8 +5,9 @@
             app:allowDividerBelow="true"
             app:dialogTitle="App Theme"
             app:entries="@array/Nightmode"
-            app:entryValues="@array/NightmodeValue"
-            app:key="nightmode"
+            app:entryValues="@array/NightmodeValues"
+            app:key="@string/pref_key_nightmode"
+            app:defaultValue="2"
             app:title="App Theme" />
     </PreferenceCategory>
 
