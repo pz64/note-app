@@ -52,6 +52,7 @@ class NotesAdapter(
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         holder.bind(data[position])
         holder.itemView.scaleOutAnim()
     }
@@ -112,9 +113,11 @@ class NotesAdapter(
             if (Colors.isDark(note.color, alpha)) {
                 binding.title.setTextColor(0xffffffff.toInt())
                 binding.content.setTextColor(0xffffffff.toInt())
+                binding.lastUpdated.setTextColor(0xfffafafa.toInt())
             } else {
                 binding.title.setTextColor(0xff000000.toInt())
                 binding.content.setTextColor(0xff000000.toInt())
+                binding.lastUpdated.setTextColor(0xff757575.toInt())
             }
 
         } else {
@@ -126,10 +129,12 @@ class NotesAdapter(
             binding.root.context.onLightMode {
                 binding.title.setTextColor(0xff000000.toInt())
                 binding.content.setTextColor(0xff000000.toInt())
+                binding.lastUpdated.setTextColor(0xff757575.toInt())
             }
             binding.root.context.onDarkMode {
                 binding.title.setTextColor(0xffffffff.toInt())
                 binding.content.setTextColor(0xffffffff.toInt())
+                binding.lastUpdated.setTextColor(0xfffafafa.toInt())
             }
         }
     }

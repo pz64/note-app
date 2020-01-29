@@ -8,6 +8,8 @@
         <variable
             name="viewModel"
             type="pzy64.xnotes.ui.screens.Pz64ViewModel" />
+        <import type="pzy64.xnotes.ui.databinding.BindingHelpers"/>
+        <import type="android.view.View"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -49,25 +51,24 @@
 
 
             <com.google.android.material.textfield.TextInputEditText
-                android:maxLength="64"
                 android:id="@+id/titleEdittext"
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:focusable="true"
                 android:hint="Title"
                 android:inputType="textShortMessage"
+                android:maxLength="64"
                 android:nextFocusDown="@id/contentsEdittext"
                 android:padding="16dp"
                 android:text="@={viewModel.title}"
                 app:boldFont="@{viewModel.currentFontIndex}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/lastUpdated" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:maxLength="1024"
@@ -90,9 +91,24 @@
                 app:layout_constraintTop_toBottomOf="@id/titleEdittext"
                 app:regularFont="@{viewModel.currentFontIndex}" />
 
+            <TextView
+                android:id="@+id/lastUpdated"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:fontFamily="@font/quicksand_regular"
+                android:paddingStart="8dp"
+                android:paddingTop="2dp"
+                android:textSize="13sp"
+                android:paddingEnd="16dp"
+                android:visibility="@{viewModel.currentNote != null ? View.VISIBLE : View.INVISIBLE}"
+                android:text="@{BindingHelpers.getDate(viewModel.currentNote.lastUpdated)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="16 minutes ago" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </com.google.android.material.card.MaterialCardView>
 
 </layout>
