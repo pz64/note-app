@@ -24,6 +24,11 @@ android {
     dataBinding {
         enabled = true
     }
+    allprojects {
+        repositories {
+            maven { url "https://jitpack.io" }
+        }
+    }
 }
 
 dependencies {
@@ -57,6 +62,8 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:0.10.5"
 
     implementation "androidx.work:work-runtime-ktx:2.3.0"
+
+    implementation 'com.github.marcoscgdev:Licenser:1.0.5'
 
     //android navigation
     implementation "androidx.navigation:navigation-runtime-ktx:2.2.0"
