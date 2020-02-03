@@ -56,6 +56,8 @@ dependencies {
     //anko for simplified functions in kotlin syntax
     implementation "org.jetbrains.anko:anko-commons:0.10.5"
 
+    implementation "androidx.work:work-runtime-ktx:2.3.0"
+
     //android navigation
     implementation "androidx.navigation:navigation-runtime-ktx:2.2.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.2.0"

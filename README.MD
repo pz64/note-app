@@ -7,6 +7,3 @@ A very simple Note keeping app focusing on simplicity and user experience in min
 - Quickly create and manage notes.
 - Minimalistic design
 - Dark and Light theme support.
-
-**Upcoming features**
-- Google drive backup of notes.

@@ -18,8 +18,5 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 preference.context.changeThemeFromValue(newValue as String)
                 true
             }
-
     }
-
-
 }

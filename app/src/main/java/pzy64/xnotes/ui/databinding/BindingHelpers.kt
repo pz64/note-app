@@ -17,10 +17,10 @@ object BindingHelpers {
     @JvmStatic
     fun getRelativeDate(date: Long) =
         "last edited " + DateUtils.getRelativeTimeSpanString(
-        date,
-        System.currentTimeMillis(),
-        DateUtils.SECOND_IN_MILLIS
-    ).toString()
+            date,
+            System.currentTimeMillis(),
+            DateUtils.SECOND_IN_MILLIS
+        ).toString()
 
     @JvmStatic
     fun getDate(date: Long): String {

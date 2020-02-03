@@ -56,6 +56,20 @@ class MainActivity : Pz64Activity() {
         menuBehavior = BottomSheetBehavior.from(menuSheet)
         menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
+        aboutButton.setOnClickListener {
+
+            when (viewModel.currentDestination.value) {
+                R.id.destinationTrash -> {
+                    val destination = TrashFragmentDirections.openAbout()
+                    navController.navigate(destination)
+                }
+                R.id.destinationMainFragment -> {
+                    val destination = MainFragmentDirections.openAbout()
+                    navController.navigate(destination)
+                }
+            }
+        }
+
         settingsButton.setOnClickListener {
 
             when (viewModel.currentDestination.value) {
@@ -90,6 +104,9 @@ class MainActivity : Pz64Activity() {
 
             when (viewModel.currentDestination.value) {
                 R.id.destinationSettings -> {
+                    navController.popBackStack()
+                }
+                R.id.destinationAbout -> {
                     navController.popBackStack()
                 }
                 else -> {
@@ -157,6 +174,11 @@ class MainActivity : Pz64Activity() {
                         })
                     }
                     R.id.destinationSettings -> {
+                        viewModel.currentFABState.value = FABState.Hidden
+                        menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                        bottomAppBar.setNavigationIcon(R.drawable.ic_arrow_back)
+                    }
+                    R.id.destinationAbout -> {
                         viewModel.currentFABState.value = FABState.Hidden
                         menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                         bottomAppBar.setNavigationIcon(R.drawable.ic_arrow_back)

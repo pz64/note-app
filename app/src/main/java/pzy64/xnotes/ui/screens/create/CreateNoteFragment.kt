@@ -59,7 +59,6 @@ class CreateNoteFragment : Pz64Fragment() {
             binding.lifecycleOwner = this
 
             setupUi()
-
     }
 
 
