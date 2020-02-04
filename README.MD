@@ -8,6 +8,9 @@ A very simple Note keeping app focusing on simplicity and user experience in min
 - Minimalistic design
 - Dark and Light theme support.
 
+**Screenshots**
+
+ [![](screenshots/1_small.png)]()  [![](screenshots/3_small.png)]() [![](screenshots/4_small.png)]() 
 
 **Privacy Policy**
 
