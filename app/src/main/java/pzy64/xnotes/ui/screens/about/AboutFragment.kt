@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.marcoscg.licenser.LicenserDialog
 import kotlinx.android.synthetic.main.fragment_about.*
 import pzy64.xnotes.BuildConfig
 import pzy64.xnotes.R

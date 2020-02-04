@@ -7,3 +7,8 @@ A very simple Note keeping app focusing on simplicity and user experience in min
 - Quickly create and manage notes.
 - Minimalistic design
 - Dark and Light theme support.
+
+
+**Privacy Policy**
+
+This app doesn't collect any personal information.

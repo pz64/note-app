@@ -63,8 +63,6 @@ dependencies {
 
     implementation "androidx.work:work-runtime-ktx:2.3.0"
 
-    implementation 'com.github.marcoscgdev:Licenser:1.0.5'
-
     //android navigation
     implementation "androidx.navigation:navigation-runtime-ktx:2.2.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.2.0"
