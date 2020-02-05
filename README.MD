@@ -1,5 +1,8 @@
 # Notes-App
+
 A very simple Note keeping app focusing on simplicity and user experience in mind.
+
+[Download from Playstore](https://play.google.com/store/apps/details?id=pzy64.xnotes)
 
 **Features**
 - Ad Free
