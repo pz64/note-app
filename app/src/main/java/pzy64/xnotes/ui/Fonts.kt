@@ -8,6 +8,10 @@ class Fonts(val context: Context) {
 
     val FONTS = arrayOf(
         Pair(
+            ResourcesCompat.getFont(context, R.font.robotoslab_bold),
+            ResourcesCompat.getFont(context, R.font.robotoslab_regular)
+        ),
+        Pair(
             ResourcesCompat.getFont(context, R.font.robotomono_bold),
             ResourcesCompat.getFont(context, R.font.robotomono_regular)
         ),
@@ -16,20 +20,12 @@ class Fonts(val context: Context) {
             ResourcesCompat.getFont(context, R.font.opensans_regular)
         ),
         Pair(
-            ResourcesCompat.getFont(context, R.font.rubik_bold),
-            ResourcesCompat.getFont(context, R.font.rubik_regular)
-        ),
-        Pair(
             ResourcesCompat.getFont(context, R.font.quicksand_bold),
             ResourcesCompat.getFont(context, R.font.quicksand_regular)
         ),
         Pair(
-            ResourcesCompat.getFont(context, R.font.dancingscript_bold),
-            ResourcesCompat.getFont(context, R.font.dancingscript_regular)
-        ),
-        Pair(
-            ResourcesCompat.getFont(context, R.font.robotoslab_bold),
-            ResourcesCompat.getFont(context, R.font.robotoslab_regular)
+            ResourcesCompat.getFont(context, R.font.school_bell_regular),
+            ResourcesCompat.getFont(context, R.font.school_bell_regular)
         ),
         Pair(
             ResourcesCompat.getFont(context, R.font.cabin_sketch_bold),

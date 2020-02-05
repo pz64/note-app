@@ -78,7 +78,7 @@ class CreateNoteFragment : Pz64Fragment() {
 
         viewModel.currentColorIndex.observe(this, Observer {
             it?.let { index ->
-                changeBg(Colors.bg(index, 0x3A))
+                changeBg(Colors.bg(index, 0x2A))
             }
         })
 
@@ -113,7 +113,7 @@ class CreateNoteFragment : Pz64Fragment() {
             startRadius,
             endRadius
         ).apply {
-            duration = 500L
+            duration = 350L
             interpolator = DecelerateInterpolator(2f)
         }
 
