@@ -36,7 +36,7 @@ class AboutFragment : Fragment() {
         }
 
         rateButton.setOnClickListener {
-            val url = ""
+            val url = "https://play.google.com/store/apps/details?id=pzy64.xnotes"
             val i = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(url)
             startActivity(i)

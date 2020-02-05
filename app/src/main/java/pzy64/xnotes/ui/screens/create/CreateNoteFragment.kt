@@ -7,22 +7,16 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.create_note_fragment.*
-import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
 import pzy64.xnotes.databinding.CreateNoteFragmentBinding
-import pzy64.xnotes.databinding.CreateNoteFragmentBindingImpl
 import pzy64.xnotes.hideKeyboard
 import pzy64.xnotes.showKeyboard
 import pzy64.xnotes.ui.Colors
 import pzy64.xnotes.ui.Fonts
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment
-import pzy64.xnotes.ui.screens.Pz64ViewModel
 import kotlin.math.hypot
 
 
@@ -30,7 +24,9 @@ class CreateNoteFragment : Pz64Fragment() {
 
     private lateinit var fonts: Fonts
 
-    private lateinit var binding:CreateNoteFragmentBinding
+    private lateinit var binding: CreateNoteFragmentBinding
+
+    private var animatingChangeColor = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -55,10 +51,10 @@ class CreateNoteFragment : Pz64Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-            binding.viewModel = viewModel
-            binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
-            setupUi()
+        setupUi()
     }
 
 
@@ -123,11 +119,10 @@ class CreateNoteFragment : Pz64Fragment() {
 
         colorRevealingLayout.visibility = View.VISIBLE
 
-
-        animator.start()
         animator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {}
             override fun onAnimationEnd(animation: Animator?) {
+                animatingChangeColor = false
                 if (context != null) {
                     containerLayout.setBackgroundColor(color)
                     colorRevealingLayout.visibility = View.GONE
@@ -135,8 +130,11 @@ class CreateNoteFragment : Pz64Fragment() {
             }
 
             override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {}
+            override fun onAnimationStart(animation: Animator?) {
+                animatingChangeColor = true
+            }
         })
+        animator.start()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -148,21 +146,21 @@ class CreateNoteFragment : Pz64Fragment() {
 
                 viewModel.currentFontIndex.value = (index + 1) % size
             }
-
             R.id.actionChangeColor -> {
-                val index = viewModel.currentColorIndex.value ?: 0
-                val size = Colors.size
-
-                viewModel.currentColorIndex.value = (index + 1) % size
+                if (!animatingChangeColor) {
+                    val index = viewModel.currentColorIndex.value ?: 0
+                    val size = Colors.size
+                    viewModel.currentColorIndex.value = (index + 1) % size
+                }
             }
             R.id.actionShareNote -> {
                 val sharingIntent = Intent(Intent.ACTION_SEND)
                 sharingIntent.type = "text/plain"
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, titleEdittext.text)
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, contentsEdittext.text)
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, viewModel.title.value)
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, viewModel.content.value)
                 startActivity(
                     Intent.createChooser(
-                        sharingIntent,"Share via"
+                        sharingIntent, "Share via"
                     )
                 )
             }
