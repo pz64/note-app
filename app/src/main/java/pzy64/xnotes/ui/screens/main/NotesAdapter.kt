@@ -10,6 +10,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.databinding.RowNoteBinding
+import pzy64.xnotes.getTileColor
 import pzy64.xnotes.onDarkMode
 import pzy64.xnotes.onLightMode
 import pzy64.xnotes.scaleOutAnim
@@ -21,7 +22,13 @@ class NotesAdapter(
 ) :
     RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
 
-    var data: MutableList<Note> = mutableListOf()
+   private var data: MutableList<Note> = mutableListOf()
+
+    fun setNotes(notes: List<Note>)  {
+        data = notes.toMutableList()
+        notifyDataSetChanged()
+    }
+
 
     fun deleteSelectedNotes() {
 
@@ -101,7 +108,9 @@ class NotesAdapter(
             )
         ) 0xffbababa.toInt() else Colors.bg(note.color, 0xff)
 
-        if (note.isSelected) {
+        val brightTileColorOnSelection = if(binding.root.context.getTileColor()) !note.isSelected else note.isSelected
+
+        if (brightTileColorOnSelection) {
 
             val alpha = 0xff
 

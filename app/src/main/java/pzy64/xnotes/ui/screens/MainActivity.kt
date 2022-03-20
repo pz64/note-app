@@ -127,6 +127,9 @@ class MainActivity : Pz64Activity() {
                     MenuType.TypeNone -> {
                         bottomAppBar.menu.clear()
                     }
+                    MenuType.TypeShare -> {
+                        bottomAppBar.replaceMenu(R.menu.share_note_menu)
+                    }
                     MenuType.TypeCreate -> {
                         bottomAppBar.replaceMenu(R.menu.create_edit_note_menu)
 
@@ -137,7 +140,6 @@ class MainActivity : Pz64Activity() {
                     }
                     MenuType.TypeDeletePermanent -> {
                         bottomAppBar.replaceMenu(R.menu.remove_restore_menu)
-
                     }
                 }
             }
@@ -168,9 +170,11 @@ class MainActivity : Pz64Activity() {
                         menuBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                         bottomAppBar.navigationIcon = null
                         viewModel.editMode.observe(this, Observer {
-                            if (viewModel.editMode.value == true)
+                            if (viewModel.editMode.value == true) {
                                 viewModel.currentFABState.value = FABState.EditNote
-                            else viewModel.currentFABState.value = FABState.SaveNote
+                            } else {
+                                viewModel.currentFABState.value = FABState.SaveNote
+                            }
                         })
                     }
                     R.id.destinationSettings -> {
@@ -219,7 +223,13 @@ class MainActivity : Pz64Activity() {
                                         R.color.amber_800
                                     )
                                 )
-                            faButton.show()
+                            faButton.show(object :
+                                FloatingActionButton.OnVisibilityChangedListener() {
+                                override fun onShown(fab: FloatingActionButton?) {
+                                    super.onShown(fab)
+                                    viewModel.menuType.value = MenuType.TypeShare
+                                }
+                            })
                         }
                     }
 
@@ -268,15 +278,13 @@ class MainActivity : Pz64Activity() {
         faButton.setOnClickListener {
             when (viewModel.currentDestination.value) {
                 R.id.destinationMainFragment -> {
-                    viewModel.editMode.value = false
-                    viewModel.currentNote.value = null
                     navigateToCreateNote()
                 }
                 R.id.destinationCreateNote -> {
                     if (viewModel.editMode.value == true) {
                         viewModel.editMode.value = false
                     } else {
-                        launch { viewModel.saveNote() }
+                        viewModel.saveNote()
                     }
                 }
             }
@@ -285,6 +293,7 @@ class MainActivity : Pz64Activity() {
 
 
     private fun navigateToCreateNote() {
+        viewModel.createMode()
         val destination = MainFragmentDirections.createNote()
         navController.navigate(destination)
     }
@@ -297,7 +306,7 @@ class MainActivity : Pz64Activity() {
     override fun onBackPressed() {
         when (viewModel.currentDestination.value) {
             R.id.destinationCreateNote -> {
-                navController.popBackStack()
+                viewModel.saveNote()
             }
             R.id.destinationSettings -> {
                 navController.popBackStack()

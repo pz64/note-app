@@ -2,6 +2,7 @@ package pzy64.xnotes.ui.screens.trash
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -15,11 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.launch
-import pzy64.xnotes.Injetor
-import pzy64.xnotes.R
+import pzy64.xnotes.*
 import pzy64.xnotes.data.model.Note
-import pzy64.xnotes.hide
-import pzy64.xnotes.show
 import pzy64.xnotes.ui.LastItemSpace
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment
 import pzy64.xnotes.ui.screens.MenuType
@@ -37,10 +35,7 @@ class TrashFragment : Pz64Fragment() {
     private lateinit var noteAdapter: NotesAdapter
 
     private val noteClicked: (Note) -> Unit = { note ->
-        viewModel.currentNote.value = note
-        viewModel.editMode.value = true
-        findNavController().navigate(R.id.destinationCreateNote)
-
+        toast("Long press to Delete or restore note")
     }
 
     private val selectedCallback: (Boolean) -> Unit = { selected ->
@@ -79,13 +74,13 @@ class TrashFragment : Pz64Fragment() {
         val space = resources.getDimensionPixelSize(R.dimen.actionBarSize)
         notesRecyclerView.addItemDecoration(LastItemSpace(space, false))
         noteAdapter = NotesAdapter(noteClicked, selectedCallback)
+        notesRecyclerView.adapter = noteAdapter
 
         launch {
-            viewModel.getTrash().observe(this@TrashFragment, Observer {
+            viewModel.getTrash().observe(viewLifecycleOwner, Observer {
                 it?.let { notes ->
                     if (notes.isNotEmpty()) {
-                        noteAdapter.data = notes.toMutableList()
-                        notesRecyclerView.adapter = noteAdapter
+                        noteAdapter.setNotes( notes)
                         placeHolder.hide()
                     } else {
                         placeHolder.text = placeholderEmpty
@@ -101,7 +96,7 @@ class TrashFragment : Pz64Fragment() {
         when (item.itemId) {
             R.id.actionDeleteForever -> {
                 if (attached) {
-                    AlertDialog.Builder(context!!, R.style.dialogButtonColor)
+                    AlertDialog.Builder(requireContext(), R.style.dialogButtonColor)
                         .setTitle("Confirm Deletion")
                         .setMessage("Deleted note can't be retrieved later.")
                         .setPositiveButton(android.R.string.ok) { dialog, which ->

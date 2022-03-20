@@ -16,7 +16,7 @@ object BindingHelpers {
 
     @JvmStatic
     fun getRelativeDate(date: Long) =
-        "last edited " + DateUtils.getRelativeTimeSpanString(
+         DateUtils.getRelativeTimeSpanString(
             date,
             System.currentTimeMillis(),
             DateUtils.SECOND_IN_MILLIS
@@ -29,7 +29,8 @@ object BindingHelpers {
             calendar.setTimeInMillis(date)
             val sdf = SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a", Locale.getDefault())
             val dt: Date = calendar.getTime() as Date
-            return "last edited " + sdf.format(dt)
+            return DateUtils.getRelativeTimeSpanString(date, System.currentTimeMillis(),
+                DateUtils.SECOND_IN_MILLIS).toString()
         } catch (e: Exception) {
         }
         return ""

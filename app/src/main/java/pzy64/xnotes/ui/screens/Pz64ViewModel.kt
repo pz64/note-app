@@ -1,6 +1,8 @@
 package pzy64.xnotes.ui.screens
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pzy64.xnotes.data.Repo
 import pzy64.xnotes.data.model.NOTE_ACTIVE
 import pzy64.xnotes.data.model.NOTE_DELETED
@@ -11,7 +13,7 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
 
     class Factory(val repo: Repo) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return Pz64ViewModel(repo) as T
         }
     }
@@ -24,7 +26,8 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
 
     val content = MutableLiveData<String>()
 
-    val currentNote = MutableLiveData<Note>(null)
+    val currentNote = MutableLiveData<Note?>(null)
+    var currentNoteBeforeEdit: Note? = null
 
     val noteSaved = MutableLiveData(false)
 
@@ -53,9 +56,7 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
         }
     }
 
-    suspend fun saveNote() {
-
-        var update = false
+    fun saveNote() = viewModelScope.launch(Dispatchers.IO) {
 
         if (currentNote.value == null) {
 
@@ -66,11 +67,15 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
                 font = currentFontIndex.value ?: 0,
                 lastUpdated = System.currentTimeMillis()
             )
-            currentNote.value = note
 
+            if (note.content.isNotEmpty() || note.title.isNotEmpty()) {
+                repo.createNote(note)
+                noteSaved.postValue(true)
+            } else {
+                noteDismissed.postValue(true)
+            }
+            currentNote.postValue(note)
         } else {
-
-            update = true
             currentNote.value?.also {
                 it.title = title.value?.trim() ?: ""
                 it.content = content.value?.trim() ?: ""
@@ -78,21 +83,29 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
                 it.font = currentFontIndex.value ?: 0
                 it.lastUpdated = System.currentTimeMillis()
             }
-        }
 
-        currentNote.value?.let { note ->
-
-            if (note.content.isNotEmpty() || note.title.isNotEmpty()) {
-                if (update) {
-                    repo.updateNote(note)
-                } else {
-                    repo.createNote(note)
-                }
-                noteSaved.postValue(true)
+            if (  !currentNote.value?.content.isNullOrEmpty() ||   !currentNote.value?.title.isNullOrEmpty()) {
+                    if (isNoteModified(  currentNote.value!!))
+                        repo.updateNote(  currentNote.value!!)
+                noteSaved.postValue(  true)
             } else {
-                noteDismissed.value = true
+                noteDismissed.postValue(true)
             }
         }
+    }
+
+    private fun isNoteModified(note: Note): Boolean {
+        note
+        currentNoteBeforeEdit
+        if (note.color == currentNoteBeforeEdit?.color &&
+            note.content == currentNoteBeforeEdit?.content &&
+            note.font == currentNoteBeforeEdit?.font &&
+            note.title == currentNoteBeforeEdit?.title &&
+            note.id == currentNoteBeforeEdit?.id
+        )
+            return false
+        return true
+
     }
 
     fun getNotes(): LiveData<List<Note>> =
@@ -129,5 +142,17 @@ class Pz64ViewModel(private val repo: Repo) : ViewModel() {
         for (i in note)
             notes.remove(i)
         repo.deleteNotes(*note.toTypedArray())
+    }
+
+    fun createMode() {
+        editMode.value = false
+        currentNoteBeforeEdit = null
+        currentNote.value = null
+    }
+
+    fun editMode(note: Note) {
+        currentNoteBeforeEdit = note.copy()
+        currentNote.value = note
+        editMode.value = true
     }
 }

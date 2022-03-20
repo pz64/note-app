@@ -1,19 +1,16 @@
 package pzy64.xnotes.ui.screens.main
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.launch
-import pzy64.xnotes.Injetor
 import pzy64.xnotes.R
 import pzy64.xnotes.data.model.Note
 import pzy64.xnotes.hide
@@ -21,7 +18,6 @@ import pzy64.xnotes.show
 import pzy64.xnotes.ui.LastItemSpace
 import pzy64.xnotes.ui.baseclasses.Pz64Fragment
 import pzy64.xnotes.ui.screens.MenuType
-import pzy64.xnotes.ui.screens.Pz64ViewModel
 
 
 class MainFragment : Pz64Fragment() {
@@ -36,8 +32,7 @@ class MainFragment : Pz64Fragment() {
     private lateinit var noteAdapter: NotesAdapter
 
     private val noteClicked: (Note) -> Unit = { note ->
-        viewModel.currentNote.value = note
-        viewModel.editMode.value = true
+        viewModel.editMode(note)
         findNavController().navigate(R.id.destinationCreateNote)
     }
 
@@ -73,32 +68,30 @@ class MainFragment : Pz64Fragment() {
 
         placeHolder.setOnClickListener {
             if (placeHolder.text == placeholderAddNote) {
-                viewModel.editMode.value = false
-                viewModel.currentNote.value = null
+                viewModel.createMode()
                 findNavController().navigate(R.id.destinationCreateNote)
             }
         }
 
         val layoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
         notesRecyclerView.layoutManager = layoutManager
+        noteAdapter = NotesAdapter(noteClicked, selectedCallback)
+        notesRecyclerView.adapter = noteAdapter
         val space = resources.getDimensionPixelSize(R.dimen.actionBarSize)
         notesRecyclerView.addItemDecoration(LastItemSpace(space, false))
-        noteAdapter = NotesAdapter(noteClicked, selectedCallback)
 
-        launch {
-            viewModel.getNotes().observe(this@MainFragment, Observer {
-                it?.let { notes ->
-                    if (notes.isNotEmpty()) {
-                        noteAdapter.data = notes.toMutableList()
-                        notesRecyclerView.adapter = noteAdapter
-                        placeHolder.hide()
-                    } else {
-                        placeHolder.text = placeholderAddNote
-                        placeHolder.show()
-                    }
+
+        viewModel.getNotes().observe(viewLifecycleOwner, Observer {
+            it?.let { notes ->
+                if (notes.isNotEmpty()) {
+                    noteAdapter.setNotes(notes)
+                    placeHolder.hide()
+                } else {
+                    placeHolder.text = placeholderAddNote
+                    placeHolder.show()
                 }
-            })
-        }
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

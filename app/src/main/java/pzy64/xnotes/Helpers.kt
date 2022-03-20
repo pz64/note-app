@@ -9,6 +9,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import org.jetbrains.anko.configuration
@@ -18,13 +19,13 @@ import org.jetbrains.anko.toast
 fun Fragment.toast(msg: String) = context?.toast(msg)
 
 
-fun View.scaleOutAnim(delay: Long = 500): AnimatorSet {
+fun View.scaleOutAnim(delay: Long = 350): AnimatorSet {
 
     val scalex = ObjectAnimator.ofFloat(this, "scaleX", 0.99f, 1f)
     scalex.duration = delay
     scalex.interpolator = DecelerateInterpolator(1f)
 
-    val scaley = ObjectAnimator.ofFloat(this, "scaleY", 0.99f, 1f)
+    val scaley = ObjectAnimator.ofFloat(this, "scaleY", 0.98f, 1f)
     scaley.duration = delay
     scaley.interpolator = DecelerateInterpolator(1f)
 
@@ -109,7 +110,7 @@ fun Context.onLightMode(block: () -> Unit) {
     }
 }
 
-fun  Context.changeThemeFromValue(value: String) {
+fun Context.changeThemeFromValue(value: String) {
 
     val themeValues = resources.getStringArray(R.array.NightmodeValues)
     when (value) {
@@ -117,4 +118,16 @@ fun  Context.changeThemeFromValue(value: String) {
         themeValues[1] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         themeValues[2] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
+}
+
+fun Context.changeTileColor(state: Boolean) {
+    val preference = PreferenceManager.getDefaultSharedPreferences(this)
+    preference.edit {
+        putBoolean(getString(R.string.pref_key_tile_color), state)
+    }
+}
+
+fun Context.getTileColor(): Boolean {
+    val preference = PreferenceManager.getDefaultSharedPreferences(this)
+    return preference.getBoolean(getString(R.string.pref_key_tile_color), true)
 }

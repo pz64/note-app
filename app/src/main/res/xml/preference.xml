@@ -9,6 +9,12 @@
             app:key="@string/pref_key_nightmode"
             app:defaultValue="2"
             app:title="App Theme" />
+        <SwitchPreferenceCompat
+            app:allowDividerAbove="true"
+            app:title="Use bright tiles"
+            app:key="@string/pref_key_tile_color"
+            app:defaultValue="true"
+            />
     </PreferenceCategory>
 
 </PreferenceScreen>

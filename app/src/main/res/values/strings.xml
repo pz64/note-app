@@ -2,7 +2,5 @@
     <string name="app_name">Quick Notes</string>
 
     <string name="pref_key_nightmode">nightmode</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pref_key_tile_color">tilecolor</string>
 </resources>

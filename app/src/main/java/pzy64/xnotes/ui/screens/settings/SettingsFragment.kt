@@ -3,8 +3,11 @@ package pzy64.xnotes.ui.screens.settings
 import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
+import androidx.preference.SwitchPreferenceCompat
 import pzy64.xnotes.R
 import pzy64.xnotes.changeThemeFromValue
+import pzy64.xnotes.changeTileColor
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -18,5 +21,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 preference.context.changeThemeFromValue(newValue as String)
                 true
             }
+
     }
 }

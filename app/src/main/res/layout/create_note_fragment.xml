@@ -70,26 +70,33 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lastUpdated" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:maxLength="1024"
-                android:id="@+id/contentsEdittext"
-                style="@style/TextAppearance.AppCompat.Subhead"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:gravity="start|top"
-                android:hint="Content"
-                android:inputType="textMultiLine"
-                android:minLines="30"
-                android:padding="16dp"
-                android:text="@={viewModel.content}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/titleEdittext"
-                app:regularFont="@{viewModel.currentFontIndex}" />
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:maxLength="4096"
+                    android:id="@+id/contentsEdittext"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="start|top"
+                    android:hint="Content"
+                    android:inputType="textMultiLine"
+                    android:minLines="10"
+                    android:padding="16dp"
+                    android:text="@={viewModel.content}"
+                    app:regularFont="@{viewModel.currentFontIndex}" />
+            </androidx.core.widget.NestedScrollView>
+
+
 
             <TextView
                 android:id="@+id/lastUpdated"
@@ -101,6 +108,7 @@
                 android:paddingStart="8dp"
                 android:paddingTop="2dp"
                 android:textSize="13sp"
+                android:background="@drawable/bg_time"
                 android:paddingEnd="16dp"
                 android:visibility="@{viewModel.currentNote != null ? View.VISIBLE : View.INVISIBLE}"
                 android:text="@{BindingHelpers.getDate(viewModel.currentNote.lastUpdated)}"

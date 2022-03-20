@@ -60,27 +60,28 @@ class CreateNoteFragment : Pz64Fragment() {
 
     private fun setupUi() {
 
-        viewModel.editMode.observe(this, Observer { editMode ->
+        viewModel.editMode.observe(viewLifecycleOwner) { editMode ->
             if (editMode == false) {
                 contentsEdittext.isFocusableInTouchMode = true
                 titleEdittext.isFocusableInTouchMode = true
-                titleEdittext.requestFocus()
+                contentsEdittext.setSelection(contentsEdittext.length())
+                contentsEdittext.requestFocus()
 
                 delayed(350) {
-                    context?.showKeyboard(titleEdittext)
+                    context?.showKeyboard(contentsEdittext)
                 }
 
             } else {
-                contentsEdittext.isFocusableInTouchMode = false
-                titleEdittext.isFocusableInTouchMode = false
+                contentsEdittext.isFocusable = false
+                titleEdittext.isFocusable = false
             }
-        })
+        }
 
-        viewModel.currentColorIndex.observe(this, Observer {
+        viewModel.currentColorIndex.observe(viewLifecycleOwner)  {
             it?.let { index ->
-                changeBg(Colors.bg(index, 0x2A))
+                changeBg(Colors.bg(index, 0x8A))
             }
-        })
+        }
 
     }
 
